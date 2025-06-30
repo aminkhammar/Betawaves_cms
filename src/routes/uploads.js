@@ -1,0 +1,92 @@
+import express from 'express';
+import multer from 'multer';
+import path from 'path';
+import fs from 'fs';
+
+const router = express.Router();
+
+// Create directory if not exists
+const teamDir = 'public/uploads/team';
+if (!fs.existsSync(teamDir)) {
+  fs.mkdirSync(teamDir, { recursive: true });
+}
+
+const caseStudyDir = 'public/uploads/case-studies';
+if (!fs.existsSync(caseStudyDir)) {
+  fs.mkdirSync(caseStudyDir, { recursive: true });
+}
+
+const styleDir = 'public/uploads/style';
+if (!fs.existsSync(styleDir)) {
+  fs.mkdirSync(styleDir, { recursive: true });
+}
+
+// Ensure the upload folder exists: public/uploads/team
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'public/uploads/team'); // Save to this folder
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    const ext = path.extname(file.originalname);
+    cb(null, uniqueSuffix + ext); // e.g., 16829481249-23901923.jpg
+  }
+});
+const caseStudyStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'public/uploads/case-studies'); // Save to this folder
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    const ext = path.extname(file.originalname);
+    cb(null, uniqueSuffix + ext);
+  }
+});
+
+const styleHeroStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'public/uploads/style');
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    const ext = path.extname(file.originalname);
+    cb(null, uniqueSuffix + ext);
+  }
+});
+
+const upload = multer({ storage });
+const caseStudyUpload = multer({ storage: caseStudyStorage });
+const styleUpload = multer({ storage: styleHeroStorage });
+
+
+// Endpoint: POST /api/uploads/team-image
+router.post('/team-image', upload.single('image'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: 'No file uploaded' });
+  }
+
+  const fileUrl = `/uploads/team/${req.file.filename}`;
+  res.status(200).json({ url: fileUrl });
+});
+
+// Endpoint: POST /api/uploads/case-study-image
+router.post('/case-study-image', caseStudyUpload.single('image'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: 'No file uploaded' });
+  }
+
+  const fileUrl = `/uploads/case-studies/${req.file.filename}`;
+  res.status(200).json({ url: fileUrl });
+});
+// Route for style hero image upload
+router.post('/style-hero-image', styleUpload.single('image'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: 'No file uploaded' });
+  }
+
+  const fileUrl = `/uploads/style/${req.file.filename}`;
+  res.status(200).json({ url: fileUrl });
+});
+
+
+export default router;
