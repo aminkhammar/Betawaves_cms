@@ -15,6 +15,7 @@ import programApplicationsRoutes from './src/routes/program-applications.js';
 
 import uploadsRoutes from './src/routes/uploads.js';
 import adminRoutes from './src/routes/admins.js';
+import popupRoutes from './src/routes/popup.js';
 
 import db from './db.js';
 
@@ -35,6 +36,7 @@ app.use('/api/contact-messages', contactMessagesRoutes);
 app.use('/api/team-members', teamRoutes);
 app.use('/api/resources', resourcesRoutes);
 app.use('/api/program-applications', programApplicationsRoutes);
+app.use('/api/popup', popupRoutes);
 
 app.use('/api/uploads', uploadsRoutes); // For handling uploads
 app.use('/uploads', express.static('public/uploads')); // Serve uploaded files

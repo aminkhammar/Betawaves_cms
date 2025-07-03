@@ -11,6 +11,18 @@ export interface Service {
   presentationUrl?: string;
 }
 
+export interface Popup {
+  id: string;
+  title: string;
+  subject: string;
+  description: string;
+  image: string;
+  link: string;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface Product {
   id: string;
   name: string;
@@ -1003,5 +1015,32 @@ export const CMSService = {
       console.error('Error deleting program application:', error);
       throw new Error('Failed to delete program application');
     }
-  }
+  },
+
+   async getPopup(): Promise<Popup | null> {
+    try {
+      return await apiService.get('/popup');
+    } catch (error) {
+      console.error('Error fetching popup:', error);
+      return null;
+    }
+  },
+  updatePopup: async (formData) => {
+  const data = new FormData();
+
+  Object.entries(formData).forEach(([key, value]) => {
+    if (key === 'image' && value instanceof File) {
+      data.append('image', value); // upload file
+    } else {
+      data.append(key, String(value));
+    }
+  });
+
+  await fetch('http://localhost:3000/api/popup/update', {
+    method: 'POST',
+    body: data
+  });
+}
+
+  
 };

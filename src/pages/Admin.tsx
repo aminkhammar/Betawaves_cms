@@ -20,6 +20,8 @@ import ResourceForm from '@/components/admin/ResourceForm';
 import TeamMemberForm from '@/components/admin/TeamMemberForm';
 import StyleManagementForm from '@/components/admin/StyleManagementForm';
 
+import PopupManagementDialog from '@/components/admin/PopupManagementDialog';
+
 
 import { 
   Service, 
@@ -57,17 +59,20 @@ import {
 const Admin = () => {
 
   // Form states
-  const [isServiceFormOpen, setIsServiceFormOpen] = useState(false);
-  const [isProductFormOpen, setIsProductFormOpen] = useState(false);
-  const [isFundFormOpen, setIsFundFormOpen] = useState(false);
-  const [isCaseStudyFormOpen, setIsCaseStudyFormOpen] = useState(false);
-  const [isBlogPostFormOpen, setIsBlogPostFormOpen] = useState(false);
-  const [isEventFormOpen, setIsEventFormOpen] = useState(false);
-  const [isResourceFormOpen, setIsResourceFormOpen] = useState(false);
-  const [isTeamMemberFormOpen, setIsTeamMemberFormOpen] = useState(false);
-  const [isStyleSettingsOpen, setIsStyleSettingsOpen] = useState(false);
-  const [isProgramApplicationFormOpen, setIsProgramApplicationFormOpen] = useState(false);
-  
+    const [isServiceFormOpen, setIsServiceFormOpen] = useState(false);
+    const [isProductFormOpen, setIsProductFormOpen] = useState(false);
+    const [isFundFormOpen, setIsFundFormOpen] = useState(false);
+    const [isCaseStudyFormOpen, setIsCaseStudyFormOpen] = useState(false);
+    const [isBlogPostFormOpen, setIsBlogPostFormOpen] = useState(false);
+    const [isEventFormOpen, setIsEventFormOpen] = useState(false);
+    const [isResourceFormOpen, setIsResourceFormOpen] = useState(false);
+    const [isTeamMemberFormOpen, setIsTeamMemberFormOpen] = useState(false);
+    const [isStyleSettingsOpen, setIsStyleSettingsOpen] = useState(false);
+    const [isProgramApplicationFormOpen, setIsProgramApplicationFormOpen] = useState(false);
+    
+    const [showPopupManagement, setShowPopupManagement] = useState(false);
+
+
   // Edit states
   const [editingService, setEditingService] = useState<Service | undefined>();
   const [editingProduct, setEditingProduct] = useState<Product | undefined>();
@@ -539,6 +544,10 @@ const Admin = () => {
     setIsStyleSettingsOpen(true);
   };
 
+   const handlePopupManagementOpen = () => {
+    setShowPopupManagement(true);
+  };
+
   const renderEntityGrid = <T extends { id: string; title?: string; name?: string; companyName?: string }>(
     items: T[],
     onEdit: (item: T) => void,
@@ -632,6 +641,7 @@ const Admin = () => {
       <AdminHeader 
         onLogout={handleLogout}
         onStyleSettingsOpen={handleStyleSettingsOpen}
+        onPopupManagementOpen={handlePopupManagementOpen}
       />
       <div className="container mx-auto px-4 py-8">
         <AdminStats 
@@ -1179,6 +1189,10 @@ const Admin = () => {
     }))
   }
 />
+ <PopupManagementDialog 
+        open={showPopupManagement} 
+        onOpenChange={setShowPopupManagement} 
+      />
 
     </div>
   );

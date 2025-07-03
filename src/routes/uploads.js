@@ -21,6 +21,11 @@ if (!fs.existsSync(styleDir)) {
   fs.mkdirSync(styleDir, { recursive: true });
 }
 
+const popupDir = 'public/uploads/popup';
+if (!fs.existsSync(popupDir)) {
+  fs.mkdirSync(popupDir, { recursive: true });
+}
+
 // Ensure the upload folder exists: public/uploads/team
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -54,10 +59,21 @@ const styleHeroStorage = multer.diskStorage({
   }
 });
 
+const PopupoStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'public/uploads/popup');
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    const ext = path.extname(file.originalname);
+    cb(null, uniqueSuffix + ext);
+  }
+});
+
 const upload = multer({ storage });
 const caseStudyUpload = multer({ storage: caseStudyStorage });
 const styleUpload = multer({ storage: styleHeroStorage });
-
+const popupUpload = multer({ storage: PopupoStorage });
 
 // Endpoint: POST /api/uploads/team-image
 router.post('/team-image', upload.single('image'), (req, res) => {
@@ -87,6 +103,13 @@ router.post('/style-hero-image', styleUpload.single('image'), (req, res) => {
   const fileUrl = `/uploads/style/${req.file.filename}`;
   res.status(200).json({ url: fileUrl });
 });
+
+// ✅ Popup
+router.post('/popup-image', popupUpload.single('image'), (req, res) => {
+  if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
+  res.status(200).json({ url: `/uploads/popup/${req.file.filename}` });
+});
+
 
 
 export default router;

@@ -41,7 +41,7 @@ const Footer = () => {
           <h2 className="text-3xl md:text-2xl font-semibold mb-4">
             Stay Updated
           </h2>
-          <p className="text-1xl mb-8 opacity-50 max-w-2xl mx-auto">
+          <p className="text-1xl mb-8  opacity-50 max-w-2xl mx-auto">
             Subscribe to our newsletter and get the latest startup insights delivered to your inbox.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">

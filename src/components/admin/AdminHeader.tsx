@@ -1,13 +1,14 @@
 
 import { Button } from '@/components/ui/button';
-import { LogOut, Palette } from 'lucide-react';
+import { LogOut, Palette ,MessageSquare} from 'lucide-react';
 
 interface AdminHeaderProps {
   onLogout: () => void;
   onStyleSettingsOpen: () => void;
+  onPopupManagementOpen: () => void;
 }
 
-const AdminHeader = ({ onLogout, onStyleSettingsOpen }: AdminHeaderProps) => {
+const AdminHeader = ({ onLogout, onStyleSettingsOpen,onPopupManagementOpen  }: AdminHeaderProps) => {
   return (
     <div className="bg-white shadow-sm border-b">
       <div className="container-width section-padding">
@@ -17,6 +18,14 @@ const AdminHeader = ({ onLogout, onStyleSettingsOpen }: AdminHeaderProps) => {
             <p className="text-gray-600 mt-2">Manage your website content from this dashboard</p>
           </div>
           <div className="flex gap-2">
+            <Button
+              variant="outline"
+              onClick={onPopupManagementOpen}
+              className="flex items-center gap-2"
+            >
+              <MessageSquare size={16} />
+              Popup
+            </Button>
             <Button
               variant="outline"
               onClick={onStyleSettingsOpen}

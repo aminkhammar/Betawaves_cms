@@ -9,11 +9,17 @@ import TeamMembers from '@/components/TeamMembers';
 import RunningText from '@/components/RunningText';
 import Collaborators from '@/components/Collaborators';
 
+import WelcomePopup from '@/components/WelcomePopup';
+
 const Home = () => {
   const [services, setServices] = useState<Service[]>([]);
   const [caseStudies, setCaseStudies] = useState<CaseStudy[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const [showPopup, setShowPopup] = useState(false);
+
+
   const [styleSettings, setStyleSettings] = useState({
     heroImage: '/lovable-uploads/1d16839f-1293-4868-96a6-d3a7e8489861.jpg',
     runningTextCompanies: [
@@ -34,14 +40,19 @@ const Home = () => {
 
     const fetchData = async () => {
       try {
-        const [servicesData, caseStudiesData, productsData] = await Promise.all([
+        const [servicesData, caseStudiesData, productsData,popupData] = await Promise.all([
           CMSService.getServices(),
           CMSService.getCaseStudies(),
-          CMSService.getProducts()
+          CMSService.getProducts(),
+          CMSService.getPopup(),
         ]);
         setServices(servicesData.slice(0, 3)); // Featured services
         setCaseStudies(caseStudiesData.slice(0, 2)); // Featured case studies
         setProducts(productsData.slice(0, 3));
+
+         if (popupData?.isActive) {
+        setShowPopup(true); // ✅ show popup if active
+      }
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -71,6 +82,8 @@ const Home = () => {
 
   return (
     <div className="min-h-screen">
+    <WelcomePopup /> 
+   
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-primary/10 via-blue-50 to-primary/5 py-20">
         <div className="container-width section-padding">
@@ -417,7 +430,7 @@ const Home = () => {
   {/* Collaborators Section */}
       <Collaborators collaborators={styleSettings.collaborators} />
 
-      
+
       {/* CTA Section */}
       <section className="py-20 bg-primary text-white">
         <div className="container-width section-padding text-center">
@@ -434,7 +447,7 @@ const Home = () => {
             </Button>
             <Button size="lg" variant="secondary" asChild>
               <Link to="/programs">Learn More</Link>
-            </Button>
+            </Button> 
           </div>
         </div>
       </section>
