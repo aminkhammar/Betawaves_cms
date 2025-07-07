@@ -1,7 +1,46 @@
 
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
 const Footer = () => {
+
+  const [email, setEmail] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+   const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+
+    setSubmitting(true);
+
+    try {
+      const res = await fetch('http://localhost:3000/api/contact-messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: '',
+          email,
+          subject: 'Newsletter',
+          message: '',
+          status: 'unread',
+        }),
+      });
+
+      if (res.ok) {
+        setSuccess(true);
+        setEmail('');
+        setTimeout(() => setSuccess(false), 3000);
+      }
+    } catch (error) {
+      console.error('Newsletter subscription error:', error);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <footer className="bg-gray-900 text-white">
       <div className="container-width section-padding py-12">
@@ -44,16 +83,24 @@ const Footer = () => {
           <p className="text-1xl mb-8  opacity-50 max-w-2xl mx-auto">
             Subscribe to our newsletter and get the latest startup insights delivered to your inbox.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-            <input 
-              type="email" 
+          <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+            <input
+              type="email"
               placeholder="Enter your email"
               className="flex-1 px-4 py-3 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-white"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
             />
-            <button className="bg-white text-primary px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors">
-              Subscribe
+            <button
+              type="submit"
+              disabled={submitting}
+              className="bg-white text-primary px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors"
+            >
+              {submitting ? 'Subscribing...' : 'Subscribe'}
             </button>
-          </div>
+          </form>
+          {success && <p className="text-green-400 mt-2">Subscribed successfully!</p>}
         </div>
         </div>
 

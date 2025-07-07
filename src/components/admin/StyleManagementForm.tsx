@@ -7,10 +7,16 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
+interface Collaborator {
+  id: string;
+  name: string;
+  logo: string;
+  website: string;
+}
 interface StyleSettings {
   heroImage: string;
   runningTextCompanies: string[];
-  collaborators: string[];
+  collaborators: Collaborator[];
 }
 
 interface StyleManagementFormProps {
@@ -29,7 +35,7 @@ const StyleManagementForm: React.FC<StyleManagementFormProps> = ({
   const [formData, setFormData] = useState({
     heroImage: currentSettings.heroImage,
     companiesText: currentSettings.runningTextCompanies.join('\n'),
-    collaboratorsText: currentSettings.collaborators.join('\n')
+    collaborators: currentSettings.collaborators ?? []
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -64,10 +70,7 @@ const StyleManagementForm: React.FC<StyleManagementFormProps> = ({
         .split('\n')
         .map(company => company.trim())
         .filter(company => company !== ''),
-      collaborators: formData.collaboratorsText
-        .split('\n')
-        .map(collaborator => collaborator.trim())
-        .filter(collaborator => collaborator !== '')
+      collaborators: formData.collaborators
     });
     onClose();
   };
@@ -76,9 +79,32 @@ const StyleManagementForm: React.FC<StyleManagementFormProps> = ({
   const [imageFile, setImageFile] = useState<File | null>(null);
 const [imagePreview, setImagePreview] = useState<string>(currentSettings.heroImage);
 
+const updateCollaborator = (index: number, field: keyof Collaborator, value: string) => {
+  setFormData(prev => {
+    const updated = [...prev.collaborators];
+    updated[index] = { ...updated[index], [field]: value };
+    return { ...prev, collaborators: updated };
+  });
+};
+
+const addCollaborator = () => {
+  setFormData(prev => ({
+    ...prev,
+    collaborators: [...prev.collaborators, { id: crypto.randomUUID(), name: '', logo: '', website: '' }]
+  }));
+};
+
+const removeCollaborator = (index: number) => {
+  setFormData(prev => {
+    const updated = [...prev.collaborators];
+    updated.splice(index, 1);
+    return { ...prev, collaborators: updated };
+  });
+};
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Style Management</DialogTitle>
         </DialogHeader>
@@ -123,19 +149,37 @@ const [imagePreview, setImagePreview] = useState<string>(currentSettings.heroIma
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="collaborators">Collaborators (one per line)</Label>
-            <Textarea
-              id="collaborators"
-              value={formData.collaboratorsText}
-              onChange={(e) => setFormData(prev => ({ ...prev, collaboratorsText: e.target.value }))}
-              placeholder="Collaborator Name 1&#10;Collaborator Name 2&#10;Collaborator Name 3"
-              rows={4}
-              required
-            />
-            <p className="text-sm text-gray-500">
-              Enter each collaborator name on a new line. These will appear in the collaborators section.
-            </p>
-          </div>
+  <Label>Collaborators</Label>
+  {formData.collaborators.map((collab, idx) => (
+    <div key={idx} className="flex flex-col md:flex-row gap-2 mb-4 border p-3 rounded-md">
+      <Input
+        placeholder="Name"
+        value={collab.name}
+        onChange={(e) => updateCollaborator(idx, 'name', e.target.value)}
+      />
+      <Input
+        placeholder="Logo URL"
+        value={collab.logo}
+        onChange={(e) => updateCollaborator(idx, 'logo', e.target.value)}
+      />
+      <Input
+        placeholder="Website URL"
+        value={collab.website}
+        onChange={(e) => updateCollaborator(idx, 'website', e.target.value)}
+      />
+      <Button
+        type="button"
+        variant="destructive"
+        onClick={() => removeCollaborator(idx)}
+      >
+        Remove
+      </Button>
+    </div>
+  ))}
+  <Button type="button" variant="outline" onClick={addCollaborator}>
+    Add Collaborator
+  </Button>
+</div>
           
           <div className="flex gap-2 pt-4">
             <Button type="submit" className="flex-1">

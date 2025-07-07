@@ -3,6 +3,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { CMSService,TeamMember } from '@/data/cmsData';
 import { useEffect, useState } from 'react';
 import { useRef } from 'react';
+import { Linkedin } from 'lucide-react'; // or any icon lib
 
 const teamMembers: TeamMember[] = [
   {
@@ -42,18 +43,24 @@ const teamMembers: TeamMember[] = [
 const TeamMembers = () => {
     const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
     const scrollRef = useRef<HTMLDivElement>(null); // 👈 Define ref here
-  useEffect(() => {
-    const fetchTeam = async () => {
-      try {
-        const data = await CMSService.getTeamMembers();
-        setTeamMembers(data);
-      } catch (error) {
-        console.error('Error fetching team members:', error);
-      }
-    };
 
-    fetchTeam();
-  }, []);
+ useEffect(() => {
+  const fetchTeam = async () => {
+    try {
+      const data = await CMSService.getTeamMembers();
+      // normalize field name
+      const formatted = data.map((member: any) => ({
+        ...member,
+        linkedIn: member.linkedin_url, // map to match expected prop
+      }));
+      setTeamMembers(formatted);
+    } catch (error) {
+      console.error('Error fetching team members:', error);
+    }
+  };
+
+  fetchTeam();
+}, []);
  // 👇 Auto-scroll effect
   useEffect(() => {
     const interval = setInterval(() => {
@@ -85,8 +92,7 @@ const TeamMembers = () => {
         </div>
 
        <div
-  className="flex gap-6 overflow-x-auto no-scrollbar scroll-smooth  items-stretch"
-  ref={scrollRef}
+ className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
 >
 
           {teamMembers.map((member) => (
@@ -100,11 +106,11 @@ const TeamMembers = () => {
                     alt={member.name}
                     className="w-24 h-24 rounded-full mx-auto object-cover group-hover:scale-105 transition-transform"
                   />
-                  <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                  {/* <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-8 h-8 bg-primary rounded-full flex items-center justify-center">
                     <span className="text-white font-bold text-sm">
                       {member.name.charAt(0)}
                     </span>
-                  </div>
+                  </div> */}
                 </div>
                 
                 <h3 className="text-lg font-semibold text-gray-900 mb-1">

@@ -22,6 +22,8 @@ import StyleManagementForm from '@/components/admin/StyleManagementForm';
 
 import PopupManagementDialog from '@/components/admin/PopupManagementDialog';
 
+import AdminManagement from '@/components/admin/AdminManagement';
+
 
 import { 
   Service, 
@@ -655,8 +657,8 @@ const Admin = () => {
           programsApplications={programApplications}
         />
         
-        <Tabs defaultValue="services" className="mt-8">
-          <TabsList className="grid w-full grid-cols-5 lg:grid-cols-8">
+        <Tabs defaultValue="services" className="mt-9">
+          <TabsList className="grid w-full grid-cols-5 lg:grid-cols-9">
             <TabsTrigger value="services">Programs</TabsTrigger>
             <TabsTrigger value="products">Products</TabsTrigger>
             <TabsTrigger value="funds">Funds</TabsTrigger>
@@ -666,6 +668,7 @@ const Admin = () => {
             <TabsTrigger value="resources">Resources</TabsTrigger>
             <TabsTrigger value="team">Team</TabsTrigger>
             <TabsTrigger value="messages">Messages</TabsTrigger>
+            <TabsTrigger value="admins">Admins</TabsTrigger>
             {/* <TabsTrigger value="applications">Applications</TabsTrigger> */}
           </TabsList>
 
@@ -1087,6 +1090,9 @@ const Admin = () => {
             </Card>
           </TabsContent>
 
+          <TabsContent value="admins">
+            <AdminManagement />
+          </TabsContent>
         </Tabs>
       </div>
 

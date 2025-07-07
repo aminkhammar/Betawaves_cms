@@ -32,11 +32,11 @@ router.get('/:id', async (req, res) => {
 // POST /api/team-members
 router.post('/', async (req, res) => {
   try {
-    const { name, position, bio, image, linkedin } = req.body;
+    const { name, position, bio, image, linkedin_url } = req.body;
     
     const [result] = await db.execute(
       'INSERT INTO team_members (name, position, bio, image, linkedin_url) VALUES (?, ?, ?, ?, ?)',
-      [name, position, bio, image, linkedin]
+      [name, position, bio, image, linkedin_url]
     );
     
     const [newTeamMember] = await db.execute('SELECT * FROM team_members WHERE id = ?', [result.insertId]);
@@ -50,11 +50,11 @@ router.post('/', async (req, res) => {
 // PUT /api/team-members/:id
 router.put('/:id', async (req, res) => {
   try {
-    const { name, position, bio, image, linkedin } = req.body;
+    const { name, position, bio, image, linkedin_url } = req.body;
     
     await db.execute(
       'UPDATE team_members SET name = ?, position = ?, bio = ?, image = ?, linkedin_url = ? WHERE id = ?',
-      [name, position, bio, image, linkedin, req.params.id]
+      [name, position, bio, image, linkedin_url, req.params.id]
     );
     
     const [updatedTeamMember] = await db.execute('SELECT * FROM team_members WHERE id = ?', [req.params.id]);

@@ -1,8 +1,14 @@
 
 import { useState, useEffect } from 'react';
 
+interface Collaborator {
+  id: string;
+  name: string;
+  logo: string;
+  website: string;
+}
 interface CollaboratorsProps {
-  collaborators: string[];
+  collaborators: Collaborator[];
 }
 
 const Collaborators: React.FC<CollaboratorsProps> = ({ collaborators }) => {
@@ -10,15 +16,22 @@ const Collaborators: React.FC<CollaboratorsProps> = ({ collaborators }) => {
     <div className="bg-gray-50 py-6">
       <div className="container-width section-padding">
         <div className="text-center">
-          <h3 className="text-lg font-semibold text-gray-700 mb-4">Our Collaborators</h3>
+          <h3 className="text-lg font-semibold text-gray-700 mb-4">Our Partners</h3>
           <div className="flex flex-wrap justify-center items-center gap-6">
-            {collaborators.map((collaborator, index) => (
-              <span 
-                key={index}
-                className="text-gray-600 font-medium px-4 py-2 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow"
+            {collaborators.map(collab => (
+              <a
+                key={collab.id}
+                href={collab.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-32 h-16"
               >
-                {collaborator}
-              </span>
+                <img
+                  src={collab.logo}
+                  alt={collab.name}
+                  className="w-full h-full object-contain hover:scale-105 transition-transform"
+                />
+              </a>
             ))}
           </div>
         </div>
@@ -26,5 +39,6 @@ const Collaborators: React.FC<CollaboratorsProps> = ({ collaborators }) => {
     </div>
   );
 };
+
 
 export default Collaborators;

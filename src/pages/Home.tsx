@@ -27,8 +27,19 @@ const Home = () => {
       'Google Ventures', 'Microsoft Ventures', 'Amazon Web Services', 'Salesforce Ventures'
     ],
     collaborators: [
-      'Microsoft', 'Google Cloud', 'AWS', 'Salesforce', 'Oracle', 'IBM'
-    ]
+  {
+    id: '1',
+    name: 'Microsoft',
+    logo: 'https://logos-world.net/wp-content/uploads/2020/09/Microsoft-Logo.png',
+    website: 'https://microsoft.com'
+  },
+  {
+    id: '2',
+    name: 'Google Cloud',
+    logo: 'https://logos-world.net/wp-content/uploads/2021/02/Google-Cloud-Logo.png',
+    website: 'https://cloud.google.com'
+  }
+]
   });
 
   useEffect(() => {
@@ -370,11 +381,11 @@ const Home = () => {
               </CardContent>
             </Card>
 
-            <div className="text-center mt-12">
+            {/* <div className="text-center mt-12">
               <Button asChild variant="secondary" size="lg" className="bg-white/20 backdrop-blur border-white/30 text-white hover:bg-white hover:text-primary font-semibold rounded-xl">
                 <Link to="/fund">Learn More About Our Fund</Link>
               </Button>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
@@ -443,11 +454,9 @@ const Home = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" variant="secondary" asChild>
-              <Link to="/contact">Apply Now</Link>
+              <Link to="/contact">Download Brochure</Link>
             </Button>
-            <Button size="lg" variant="secondary" asChild>
-              <Link to="/programs">Learn More</Link>
-            </Button> 
+          
           </div>
         </div>
       </section>
