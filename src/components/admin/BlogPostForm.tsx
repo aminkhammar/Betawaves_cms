@@ -38,6 +38,7 @@ const BlogPostForm = ({ isOpen, onClose, onSubmit, blogPost }: BlogPostFormProps
         tags: blogPost.tags.join(', '),
         image: blogPost.image
       });
+      setImagePreview(blogPost.image); 
     } else {
       setFormData({
         title: '',
@@ -52,25 +53,55 @@ const BlogPostForm = ({ isOpen, onClose, onSubmit, blogPost }: BlogPostFormProps
     }
   }, [blogPost, isOpen]);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const formattedTags = formData.tags
-      .split(',')
-      .map(tag => tag.trim())
-      .filter(tag => tag);
-    onSubmit({
-      title: formData.title,
-      excerpt: formData.excerpt,
-      content: formData.content,
-      author: formData.author,
-      category: formData.category,
-      publishDate: formData.publishDate,
-      tags: formattedTags,
-      image: formData.image
-    });
-    onClose();
-  };
+ const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
 
+  let imageUrl = formData.image;
+
+  if (imageFile) {
+    const form = new FormData();
+    form.append('image', imageFile);
+
+    try {
+      const res = await fetch('http://localhost:3000/api/uploads/blog-image', {
+        method: 'POST',
+        body: form,
+      });
+
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(`Upload failed: ${text}`);
+      }
+
+      const data = await res.json();
+      imageUrl = data.url;
+    } catch (error) {
+      console.error('Image upload failed:', error);
+      return;
+    }
+  }
+
+  const formattedTags = formData.tags
+    .split(',')
+    .map(tag => tag.trim())
+    .filter(tag => tag);
+
+  onSubmit({
+    title: formData.title,
+    excerpt: formData.excerpt,
+    content: formData.content,
+    author: formData.author,
+    category: formData.category,
+    publishDate: formData.publishDate,
+    tags: formattedTags,
+    image: imageUrl
+  });
+
+  onClose();
+};
+
+const [imageFile, setImageFile] = useState<File | null>(null);
+const [imagePreview, setImagePreview] = useState<string>('');
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -154,14 +185,28 @@ const BlogPostForm = ({ isOpen, onClose, onSubmit, blogPost }: BlogPostFormProps
           </div>
           
           <div>
-            <Label htmlFor="image">Featured Image URL</Label>
-            <Input
-              id="image"
-              value={formData.image}
-              onChange={(e) => setFormData(prev => ({ ...prev, image: e.target.value }))}
-              placeholder="https://example.com/image.jpg"
-            />
-          </div>
+  <Label htmlFor="image">Upload Image</Label>
+  <Input
+    id="image"
+    type="file"
+    accept="image/*"
+    onChange={(e) => {
+      const file = e.target.files?.[0];
+      if (file) {
+        setImageFile(file);
+        setImagePreview(URL.createObjectURL(file));
+      }
+    }}
+    required={!blogPost}
+  />
+  {imagePreview && (
+    <img
+      src={imagePreview}
+      alt="Preview"
+      className="w-24 h-24 object-cover rounded border mt-2"
+    />
+  )}
+</div>
           
           <div className="flex gap-2 pt-4">
             <Button type="submit">{blogPost ? 'Update' : 'Add'} Blog Post</Button>

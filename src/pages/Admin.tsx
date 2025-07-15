@@ -11,6 +11,7 @@ import { useAdmin } from '@/contexts/AdminContext';
 import AdminHeader from '@/components/admin/AdminHeader';
 import AdminStats from '@/components/admin/AdminStats';
 import ServiceForm from '@/components/admin/ServiceForm';
+import ConsultingForm from '@/components/admin/ConsultingForm';
 import ProductForm from '@/components/admin/ProductForm';
 import FundForm from '@/components/admin/FundForm';
 import CaseStudyForm from '@/components/admin/CaseStudyForm';
@@ -34,6 +35,7 @@ import {
   Event, 
   Resource, 
   TeamMember,
+  Consulting,
   ProgramApplication,
   ContactMessage 
 } from '@/data/cmsData';
@@ -55,7 +57,10 @@ import {
   transformResourceFromDB,
   transformTeamMemberToDB,
   transformTeamMemberFromDB,
-  transformContactMessageFromDB
+  transformContactMessageFromDB,
+  transformConsultingFromDB,
+  transformConsultingToDB
+
 } from '@/utils/dataTransformers';
 
 const Admin = () => {
@@ -71,12 +76,14 @@ const Admin = () => {
     const [isTeamMemberFormOpen, setIsTeamMemberFormOpen] = useState(false);
     const [isStyleSettingsOpen, setIsStyleSettingsOpen] = useState(false);
     const [isProgramApplicationFormOpen, setIsProgramApplicationFormOpen] = useState(false);
+    const [isConsultingFormOpen, setIsConsultingFormOpen] = useState(false);
     
     const [showPopupManagement, setShowPopupManagement] = useState(false);
 
 
   // Edit states
   const [editingService, setEditingService] = useState<Service | undefined>();
+  const [editingConsulting, setEditingConsulting] = useState<Consulting | undefined>();
   const [editingProduct, setEditingProduct] = useState<Product | undefined>();
   const [editingFund, setEditingFund] = useState<Fund | undefined>();
   const [editingCaseStudy, setEditingCaseStudy] = useState<CaseStudy | undefined>();
@@ -99,6 +106,15 @@ const Admin = () => {
     queryFn: async () => {
       const data = await apiService.get<any[]>('/services');
       return data.map(transformServiceFromDB);
+    },
+     enabled: isAdminLoggedIn,
+  });
+
+    const { data: consulting = [] } = useQuery({
+    queryKey: ['consulting'],
+    queryFn: async () => {
+      const data = await apiService.get<any[]>('/consulting');
+      return data.map(transformConsultingFromDB);
     },
      enabled: isAdminLoggedIn,
   });
@@ -223,6 +239,42 @@ const Admin = () => {
     }
   });
 
+
+
+  const createConsultingMutation = useMutation({
+  mutationFn: (data: Omit<Consulting, 'id'>) => 
+    apiService.post('/consulting', transformConsultingToDB(data)),
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ['consulting'] });
+    toast({ title: 'Consulting created successfully' });
+  },
+  onError: () => {
+    toast({ title: 'Failed to create consulting', variant: 'destructive' });
+  }
+});
+
+const updateConsultingMutation = useMutation({
+  mutationFn: ({ id, data }: { id: string; data: Omit<Consulting, 'id'> }) =>
+    apiService.put(`/consulting/${id}`, transformConsultingToDB(data)),
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ['consulting'] });
+    toast({ title: 'Consulting updated successfully' });
+  },
+  onError: () => {
+    toast({ title: 'Failed to update consulting', variant: 'destructive' });
+  }
+});
+
+const deleteConsultingMutation = useMutation({
+  mutationFn: (id: string) => apiService.delete(`/consulting/${id}`),
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ['consulting'] });
+    toast({ title: 'Consulting deleted successfully' });
+  },
+  onError: () => {
+    toast({ title: 'Failed to delete consulting', variant: 'destructive' });
+  }
+});
   // Product mutations
   const createProductMutation = useMutation({
     mutationFn: (data: Omit<Product, 'id'>) => apiService.post('/products', transformProductToDB(data)),
@@ -542,6 +594,16 @@ const Admin = () => {
   };
 
 
+const handleConsultingSubmit = (data: Omit<Consulting, 'id'>) => {
+  if (editingConsulting) {
+    updateConsultingMutation.mutate({ id: editingConsulting.id, data });
+    setEditingConsulting(undefined);
+  } else {
+    createConsultingMutation.mutate(data);
+  }
+};
+
+
   const handleStyleSettingsOpen = () => {
     setIsStyleSettingsOpen(true);
   };
@@ -648,6 +710,7 @@ const Admin = () => {
       <div className="container mx-auto px-4 py-8">
         <AdminStats 
           services={services}
+          consulting={consulting}
           teamMembers={teamMembers}
           products={products}
           funds={funds}
@@ -657,12 +720,13 @@ const Admin = () => {
           programsApplications={programApplications}
         />
         
-        <Tabs defaultValue="services" className="mt-9">
-          <TabsList className="grid w-full grid-cols-5 lg:grid-cols-9">
+        <Tabs defaultValue="services" className="mt-10">
+          <TabsList className="grid w-full grid-cols-5 lg:grid-cols-10">
             <TabsTrigger value="services">Programs</TabsTrigger>
+            <TabsTrigger value="consulting">Consultings</TabsTrigger>
             <TabsTrigger value="products">Products</TabsTrigger>
             <TabsTrigger value="funds">Funds</TabsTrigger>
-            <TabsTrigger value="case-studies">Case Studies</TabsTrigger>
+            <TabsTrigger value="case-studies">Portfolio</TabsTrigger>
             <TabsTrigger value="blog-posts">Blog Posts</TabsTrigger>
             {/* <TabsTrigger value="events">Events</TabsTrigger> */}
             <TabsTrigger value="resources">Resources</TabsTrigger>
@@ -715,6 +779,57 @@ const Admin = () => {
                             ))}
                             {service.features.length > 3 && (
                               <li>... and {service.features.length - 3} more</li>
+                            )}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  )
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="consulting" className="mt-6">
+            <Card>
+              <CardHeader>
+                <div className="flex justify-between items-center">
+                  <CardTitle>Consultings Management</CardTitle>
+                  <Button onClick={() => setIsConsultingFormOpen(true)}>
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add a Consult
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent>
+                {renderEntityGrid(
+                  consulting,
+                  (consulting) => {
+                    setEditingConsulting(consulting);
+                    setIsConsultingFormOpen(true);
+                  },
+                  (id) => deleteConsultingMutation.mutate(id),
+                  'title',
+                  (consulting) => (
+                    <div className="space-y-2 text-sm">
+                      <p className="text-gray-700">{consulting.description}</p>
+                      <div className="flex gap-2 flex-wrap">
+                        <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">
+                          {consulting.category}
+                        </span>
+                      </div>
+                      <div className="text-xs text-gray-600">
+                        <strong>Eligibility:</strong> {consulting.eligibility}
+                      </div>
+                      {consulting.features.length > 0 && (
+                        <div className="text-xs">
+                          <strong>Features:</strong>
+                          <ul className="list-disc list-inside mt-1 text-gray-600">
+                            {consulting.features.slice(0, 3).map((feature, index) => (
+                              <li key={index}>{feature}</li>
+                            ))}
+                            {consulting.features.length > 3 && (
+                              <li>... and {consulting.features.length - 3} more</li>
                             )}
                           </ul>
                         </div>
@@ -841,10 +956,10 @@ const Admin = () => {
             <Card>
               <CardHeader>
                 <div className="flex justify-between items-center">
-                  <CardTitle>Case Studies Management</CardTitle>
+                  <CardTitle>Portfolio Management</CardTitle>
                   <Button onClick={() => setIsCaseStudyFormOpen(true)}>
                     <Plus className="w-4 h-4 mr-2" />
-                    Add Case Study
+                    Add Portfolio
                   </Button>
                 </div>
               </CardHeader>
@@ -1106,6 +1221,17 @@ const Admin = () => {
         onSubmit={handleServiceSubmit}
         service={editingService}
       />
+
+      <ConsultingForm
+  isOpen={isConsultingFormOpen}
+  onClose={() => {
+    setIsConsultingFormOpen(false);
+    setEditingConsulting(undefined);
+  }}
+  onSubmit={handleConsultingSubmit}
+  consulting={editingConsulting}
+/>
+
 
       <ProductForm
         isOpen={isProductFormOpen}

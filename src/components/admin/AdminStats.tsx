@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface AdminStatsProps {
   services: any[];
+  consulting: any[];
   teamMembers: any[];
   products: any[];
   funds: any[];
@@ -13,7 +14,7 @@ interface AdminStatsProps {
   programsApplications?: any[];
 }
 
-const AdminStats = ({ services, teamMembers, products, funds, messages, caseStudies, blogPosts }: AdminStatsProps) => {
+const AdminStats = ({ services, teamMembers, products, funds, messages, caseStudies, blogPosts, consulting }: AdminStatsProps) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-7 gap-6 mb-7">
       <Card>
@@ -23,6 +24,16 @@ const AdminStats = ({ services, teamMembers, products, funds, messages, caseStud
         <CardContent>
           <div className="text-2xl font-bold text-primary">{services.length}</div>
           <p className="text-sm text-gray-600">Active programs</p>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader className="pb-2">
+          <CardTitle className="text-sm text-gray-600">Consultings</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold text-primary">{consulting.length}</div>
+          <p className="text-sm text-gray-600">Active Consultings</p>
         </CardContent>
       </Card>
       

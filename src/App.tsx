@@ -3,23 +3,25 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import { AdminProvider } from "@/contexts/AdminContext";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import Home from "./pages/Home";
 import Programs from "./pages/Programs";
+import Consultings from "./pages/Consulting";
 import Products from "./pages/Products";
 import Resources from "./pages/Resources";
 import Fund from "./pages/Fund";
 import CaseStudies from "./pages/CaseStudies";
 import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
 import Events from "./pages/Events";
 import Contact from "./pages/Contact";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "@/components/AdminLogin"; // at the top
-
+import ScrollToTop from "@/ScrollToTop"; // at the top
 
 const queryClient = new QueryClient();
 
@@ -29,18 +31,21 @@ const App = () => (
       <AdminProvider>
         <Toaster />
         <Sonner />
-        <BrowserRouter>
+        <HashRouter>
+          <ScrollToTop /> 
           <div className="min-h-screen flex flex-col">
             <Navigation />
             <main className="flex-1">
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/programs" element={<Programs />} />
+                <Route path="/consultings" element={<Consultings />} />
                 <Route path="/products" element={<Products />} />
                 <Route path="/resources" element={<Resources />} />
                 <Route path="/fund" element={<Fund />} />
                 <Route path="/case-studies" element={<CaseStudies />} />
                 <Route path="/blog" element={<Blog />} />
+                <Route path="/blog/:id" element={<BlogPost />} />
                 <Route path="/events" element={<Events />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/admin" element={<AdminLogin />} />
@@ -51,7 +56,7 @@ const App = () => (
             </main>
             <Footer />
           </div>
-        </BrowserRouter>
+        </HashRouter>
       </AdminProvider>
     </TooltipProvider>
   </QueryClientProvider>

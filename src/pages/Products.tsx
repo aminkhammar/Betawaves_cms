@@ -115,7 +115,7 @@ const Products = () => {
           {/* Products Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {filteredProducts.map((product) => (
-              <Card key={product.id} className="h-full hover:shadow-lg transition-shadow">
+              <Card key={product.id} className="h-full flex flex-col justify-between hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <div className="flex justify-between items-start mb-4">
                     <Badge variant="outline">{product.category}</Badge>
@@ -127,7 +127,7 @@ const Products = () => {
                   </CardDescription>
                   <div className="text-xl font-bold text-primary mt-2">{product.price}</div>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="flex flex-col flex-grow justify-between">
                   <div className="mb-6">
                     <h4 className="font-semibold text-gray-900 mb-3">Key Features:</h4>
                     <ul className="space-y-2">
@@ -140,7 +140,7 @@ const Products = () => {
                     </ul>
                   </div>
                   <Button
-  className="w-full"
+  className="w-full mt-auto"
   disabled={product.status !== 'active'}
   onClick={() => {
     if (product.status === 'active' && product.image) {

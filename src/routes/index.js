@@ -4,6 +4,7 @@ const router = express.Router();
 
 // Import all route modules
 const servicesRoutes = require('./services');
+const consultingsRoutes = require('./consulting');
 const productsRoutes = require('./products');
 const fundsRoutes = require('./funds');
 const caseStudiesRoutes = require('./case-studies');
@@ -17,6 +18,7 @@ const uploadsRoutes = require('./uploads');
 
 // Mount all routes
 router.use('/services', servicesRoutes);
+router.use('/consulting', consultingsRoutes);
 router.use('/products', productsRoutes);
 router.use('/funds', fundsRoutes);
 router.use('/case-studies', caseStudiesRoutes);

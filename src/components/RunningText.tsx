@@ -7,28 +7,29 @@ interface RunningTextProps {
 const RunningText: React.FC<RunningTextProps> = ({ companies }) => {
   return (
     <div className="bg-[#1872f2] py-4 overflow-hidden">
-      <div className="relative">
-        <div className="animate-marquee whitespace-nowrap flex">
-          <div className="flex items-center space-x-8">
-            {companies.concat(companies).map((company, index) => (
-              <span 
-                key={`${company}-${index}`}
+      <div className="relative flex w-max animate-marquee">
+        {[0, 1].map((_, i) => (
+          <div key={i} className="flex items-center space-x-8">
+            {companies.map((company, index) => (
+              <span
+                key={`${company}-${i}-${index}`}
                 className="text-lg font-medium text-white mx-8"
               >
                 {company}
               </span>
             ))}
           </div>
-        </div>
+        ))}
       </div>
+
       <style>
         {`
           @keyframes marquee {
-            0% { transform: translateX(0); }
+            0% { transform: translateX(0%); }
             100% { transform: translateX(-50%); }
           }
           .animate-marquee {
-            animation: marquee 30s linear infinite;
+            animation: marquee 15s linear infinite;
           }
         `}
       </style>

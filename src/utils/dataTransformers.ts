@@ -1,5 +1,26 @@
-import { Service, Product, Fund, CaseStudy, BlogPost, Event, ContactMessage, Resource, TeamMember } from '@/data/cmsData';
+import { Service, Product, Fund, CaseStudy, BlogPost, Event, ContactMessage, Resource, TeamMember, Consulting } from '@/data/cmsData';
 
+
+export const transformConsultingFromDB = (dbItem: any): Consulting => ({
+  id: dbItem.id.toString(),
+  title: dbItem.title,
+  description: dbItem.description,
+  features: typeof dbItem.features === 'string' ? JSON.parse(dbItem.features) : dbItem.features,
+  icon: dbItem.icon,
+  eligibility: dbItem.eligibility,
+  category: dbItem.category,
+  directUrl: dbItem.direct_url || undefined,
+});
+
+export const transformConsultingToDB = (consulting: Omit<Consulting, 'id'>) => ({
+  title: consulting.title,
+  description: consulting.description,
+  features: JSON.stringify(consulting.features),
+  icon: consulting.icon,
+  eligibility: consulting.eligibility,
+  category: consulting.category,
+  directUrl: consulting.directUrl ?? null,
+});
 // Transform MySQL service to frontend format
 export const transformServiceFromDB = (dbService: any): Service => ({
   id: dbService.id.toString(),

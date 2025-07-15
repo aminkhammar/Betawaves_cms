@@ -11,6 +11,17 @@ export interface Service {
   presentationUrl?: string;
 }
 
+export interface Consulting {
+  id: string;
+  title: string;
+  description: string;
+  features: string[];
+  icon: string;
+  eligibility: string;
+  category: string;
+  directUrl?: string;
+}
+
 export interface Popup {
   id: string;
   title: string;
@@ -127,6 +138,18 @@ export interface ProgramApplication {
   message: string;
   timestamp: string;
   status: 'pending' | 'approved' | 'rejected';
+}
+
+export interface BlogPost {
+  id: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  image: string;
+  category: string;
+  tags: string[];
+  author: string;
+  publishDate: string;
 }
 
 // Mock data
@@ -536,6 +559,7 @@ const mockProgramApplications: ProgramApplication[] = [
 ];
 
 import { apiService, APIError } from '@/services/apiService';
+
 import {
   transformServiceFromDB,
   transformServiceToDB,
@@ -554,7 +578,9 @@ import {
   transformContactMessageFromDB,
   transformContactMessageToDB,
   transformTeamMemberFromDB,
-  transformTeamMemberToDB
+  transformTeamMemberToDB,
+  transformConsultingFromDB,
+  transformConsultingToDB,
 } from '@/utils/dataTransformers';
 
 export const CMSService = {
@@ -597,6 +623,52 @@ export const CMSService = {
     } catch (error) {
       console.error('Error deleting service:', error);
       throw new Error('Failed to delete service');
+    }
+  },
+    async getConsulting(): Promise<Consulting[]> {
+    try {
+      const data = await apiService.get<any[]>('/consulting');
+      return data.map(transformConsultingFromDB);
+    } catch (error) {
+      console.error('Error fetching consulting:', error);
+      return [];
+    }
+  },
+
+  async getConsultings(): Promise<Consulting[]> {
+  const dbConsultings = await apiService.get<any[]>('/consultings');
+  return dbConsultings.map(transformConsultingFromDB);
+}
+,
+
+  async createConsulting(data: Omit<Consulting, 'id'>): Promise<Consulting> {
+    try {
+      const dbData = transformConsultingToDB(data);
+      const response = await apiService.post<any>('/consulting', dbData);
+      return transformConsultingFromDB(response);
+    } catch (error) {
+      console.error('Error creating consulting entry:', error);
+      throw new Error('Failed to create consulting');
+    }
+  },
+
+  async updateConsulting(id: string, data: Omit<Consulting, 'id'>): Promise<Consulting> {
+    try {
+      const dbData = transformConsultingToDB(data);
+      const response = await apiService.put<any>(`/consulting/${id}`, dbData);
+      return transformConsultingFromDB(response);
+    } catch (error) {
+      console.error('Error updating consulting entry:', error);
+      throw new Error('Failed to update consulting');
+    }
+  },
+
+  async deleteConsulting(id: string): Promise<void> {
+    try {
+      await apiService.delete(`/consulting/${id}`);
+    } catch (error) {
+      console.error('Error deleting consulting entry:', error);
+      throw new Error('Failed to delete consulting');
     }
   },
 

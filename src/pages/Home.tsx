@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowUp, Users, BookOpen, Home as HomeIcon, Bot, Search, Target, DollarSign, Globe, Zap } from 'lucide-react';
-import { CMSService, Service, CaseStudy, Product } from '@/data/cmsData';
+import { CMSService, Service, CaseStudy, Product, Consulting } from '@/data/cmsData';
 import TeamMembers from '@/components/TeamMembers';
 import RunningText from '@/components/RunningText';
 import Collaborators from '@/components/Collaborators';
@@ -13,6 +13,7 @@ import WelcomePopup from '@/components/WelcomePopup';
 
 const Home = () => {
   const [services, setServices] = useState<Service[]>([]);
+  const [consulting, setConsulting] = useState<Consulting[]>([]);
   const [caseStudies, setCaseStudies] = useState<CaseStudy[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -51,13 +52,15 @@ const Home = () => {
 
     const fetchData = async () => {
       try {
-        const [servicesData, caseStudiesData, productsData,popupData] = await Promise.all([
+        const [servicesData, caseStudiesData, productsData,popupData,consultingData] = await Promise.all([
           CMSService.getServices(),
           CMSService.getCaseStudies(),
           CMSService.getProducts(),
           CMSService.getPopup(),
+          CMSService.getConsulting(),
         ]);
         setServices(servicesData.slice(0, 3)); // Featured services
+        setConsulting(consultingData.slice(0, 3));
         setCaseStudies(caseStudiesData.slice(0, 2)); // Featured case studies
         setProducts(productsData.slice(0, 3));
 
@@ -113,7 +116,9 @@ const Home = () => {
                   <Link to="/contact">Start Your Journey</Link>
                 </Button>
                 <Button variant="outline" size="lg" asChild>
-                  <Link to="/programs">Explore Programs</Link>
+                  <a href="https://www.hubspot.fr/" target="_blank" rel="noopener noreferrer">
+    Download Our Brochure
+  </a>
                 </Button>
               </div>
               
@@ -164,37 +169,37 @@ const Home = () => {
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Our Mission
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Enabling organisations through skills and innovation programs, and investing in tech startups across frontier and emerging markets.
+            <p className="text-xl text-gray-600 max-w-4xl mx-auto">
+              At Betawaves, we empower nations and industries to thrive by activating three core forces:
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                <HomeIcon className="h-8 w-8 text-primary" />
+                <Users className="h-8 w-8 text-primary" />
               </div>
-              <h3 className="text-xl font-semibold mb-4">Nurture Ideas</h3>
+              <h3 className="text-xl font-semibold mb-4">People</h3>
               <p className="text-gray-600">
-                We provide the perfect environment for your ideas to grow, with expert guidance and resources.
+                We cultivate talent and strengthen human capital through tailored training, mentorship, and workforce development—building the next generation of tech leaders, innovators, and change-makers.
               </p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
                 <ArrowUp className="h-8 w-8 text-primary" />
               </div>
-              <h3 className="text-xl font-semibold mb-4">Accelerate Growth</h3>
+              <h3 className="text-xl font-semibold mb-4">Technology</h3>
               <p className="text-gray-600">
-                Fast-track your startup's development with our proven methodologies and industry connections.
+              We harness the power of emerging technologies to help startups and enterprises build scalable, efficient, and future-proof solutions across key sectors.
               </p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Users className="h-8 w-8 text-primary" />
+                <HomeIcon className="h-8 w-8 text-primary" />
               </div>
-              <h3 className="text-xl font-semibold mb-4">Build Community</h3>
+              <h3 className="text-xl font-semibold mb-4">Innovation</h3>
               <p className="text-gray-600">
-                Connect with fellow entrepreneurs, mentors, and investors in our thriving startup ecosystem.
+                We design and drive innovation ecosystems, launch ventures, and enable strategic transformation—working with governments, corporates, and startups to turn bold ideas into real impact.
               </p>
             </div>
           </div>
@@ -202,7 +207,7 @@ const Home = () => {
       </section>
 
       {/* Featured Programs */}
-      <section className="py-20 bg-gray-50">
+      {/* <section className="py-20">
         <div className="container-width section-padding">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
@@ -243,6 +248,52 @@ const Home = () => {
           <div className="text-center mt-12">
             <Button asChild>
               <Link to="/programs">View All Programs</Link>
+            </Button>
+          </div>
+        </div>
+      </section> */}
+
+      {/* Featured Consulting */}
+      <section className="py-20 bg-gray-50">
+        <div className="container-width section-padding">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Innovation Consulting
+            </h2>
+            <p className="text-xl text-gray-600">
+              Comprehensive Consultings designed to address every aspect of startup development
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {consulting.map(consulting => {
+            const IconComponent = getIcon(consulting.icon);
+            return <Card key={consulting.id} className="h-full hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                      <IconComponent className="h-6 w-6 text-primary" />
+                    </div>
+                    <CardTitle className="text-xl">{consulting.title}</CardTitle>
+                    <CardDescription className="text-base">{consulting.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-2 mb-6">
+                      {consulting.features.slice(0, 3).map((feature, index) => <li key={index} className="flex items-center text-sm text-gray-600">
+                          <div className="w-1.5 h-1.5 bg-primary rounded-full mr-3"></div>
+                          {feature}
+                        </li>)}
+                    </ul>
+                    <div className="space-y-2 text-sm">
+                      <div><strong>Duration : </strong> {consulting.eligibility}</div>
+                    </div>
+                  </CardContent>
+                </Card>;
+          })}
+          </div>
+
+          <div className="text-center mt-12">
+            <Button asChild>
+              <Link to="/consultings">View All Consultings</Link>
             </Button>
           </div>
         </div>
@@ -415,14 +466,18 @@ const Home = () => {
                   <CardDescription>{caseStudy.description}</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <blockquote className="border-l-4 border-primary pl-4 italic text-gray-600 mb-4">
-                    "{caseStudy.testimonial.quote}"
-                  </blockquote>
-                  <div className="text-sm">
-                    <strong>{caseStudy.testimonial.author}</strong>
-                    <div className="text-gray-500">{caseStudy.testimonial.position}</div>
-                  </div>
-                </CardContent>
+      {caseStudy.testimonial?.quote?.trim() && (
+        <>
+          <blockquote className="border-l-4 border-primary pl-4 italic text-gray-600 mb-4">
+            "{caseStudy.testimonial.quote}"
+          </blockquote>
+          <div className="text-sm">
+            <strong>{caseStudy.testimonial.author}</strong>
+            <div className="text-gray-500">{caseStudy.testimonial.position}</div>
+          </div>
+        </>
+      )}
+    </CardContent>
               </Card>)}
           </div>
 

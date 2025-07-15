@@ -1,28 +1,20 @@
-
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Users, BookOpen, Home as HomeIcon, ArrowUp } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { ArrowUp, Users, BookOpen, Home as HomeIcon } from 'lucide-react';
 import { CMSService, Service } from '@/data/cmsData';
-import ProgramApplicationForm from '@/components/ProgramApplicationForm';
+import ServiceApplicationForm from '@/components/ServiceApplicationForm';
 
 const Programs = () => {
   const [services, setServices] = useState<Service[]>([]);
-  const [filteredServices, setFilteredServices] = useState<Service[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [loading, setLoading] = useState(true);
-  const [isApplicationFormOpen, setIsApplicationFormOpen] = useState(false);
-  const [selectedProgram, setSelectedProgram] = useState<Service | null>(null);
 
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const servicesData = await CMSService.getServices();
-        setServices(servicesData);
-        setFilteredServices(servicesData);
+        const data = await CMSService.getServices();
+        setServices(data);
       } catch (error) {
         console.error('Error fetching services:', error);
       } finally {
@@ -32,14 +24,6 @@ const Programs = () => {
 
     fetchServices();
   }, []);
-
-  useEffect(() => {
-    if (selectedCategory === 'all') {
-      setFilteredServices(services);
-    } else {
-      setFilteredServices(services.filter(service => service.category === selectedCategory));
-    }
-  }, [selectedCategory, services]);
 
   const getIcon = (iconName: string) => {
     const icons = {
@@ -51,24 +35,6 @@ const Programs = () => {
     return icons[iconName as keyof typeof icons] || HomeIcon;
   };
 
-  const categories = [
-    { value: 'all', label: 'All Categories' },
-    { value: 'incubation', label: 'Incubation' },
-    { value: 'acceleration', label: 'Acceleration' },
-    { value: 'mentorship', label: 'Mentorship' },
-    { value: 'funding', label: 'Funding' }
-  ];
-
-  const handleApplyClick = (program: Service) => {
-  if (program.presentationUrl) {
-    window.open(program.presentationUrl, '_blank');
-  } else {
-    console.warn('No Link provided for this program.');
-  }
-};
-
-
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -78,93 +44,172 @@ const Programs = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-primary/10 via-blue-50 to-primary/5 py-20">
+    <div className="min-h-screen">
+      {/* Header */}
+      <section className="bg-gradient-to-r from-primary/10 to-blue-50 py-20">
         <div className="container-width section-padding">
-          <div className="text-center">
+          <div className="text-center max-w-3xl mx-auto">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
               Our <span className="gradient-text">Programs</span>
             </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-              Comprehensive programs designed to support startups at every stage of their journey, 
-              from ideation to scaling and beyond.
+            <p className="text-xl text-gray-600 leading-relaxed">
+              Comprehensive support programs designed to accelerate your startup's growth at every stage. 
+              From ideation to scaling, we provide the resources, mentorship, and networks you need to succeed.
             </p>
-            <Button size="lg" onClick={() => handleApplyClick(services[0])}>
-              Apply Now
-            </Button>
           </div>
         </div>
       </section>
 
-      {/* Programs Section */}
+      {/* Programs Grid */}
       <section className="py-20">
         <div className="container-width section-padding">
-          {/* Filter */}
-          <div className="flex justify-between items-center mb-8">
-            <h2 className="text-2xl font-bold text-gray-900">All Programs</h2>
-            <div className="flex items-center gap-4">
-              <span className="text-sm text-gray-600">Filter by category:</span>
-              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                <SelectTrigger className="w-48">
-                  <SelectValue placeholder="Select category" />
-                </SelectTrigger>
-                <SelectContent>
-                  {categories.map((category) => (
-                    <SelectItem key={category.value} value={category.value}>
-                      {category.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          {/* Programs Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredServices.map((service) => {
+          <div className="grid grid-cols-1 gap-12">
+            {services.map((service, index) => {
               const IconComponent = getIcon(service.icon);
               return (
-                <Card key={service.id} className="h-full hover:shadow-lg transition-shadow">
-                  <CardHeader>
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                        <IconComponent className="h-6 w-6 text-primary" />
+                <Card key={service.id} className={`overflow-hidden hover:shadow-xl transition-all duration-300 ${index % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}>
+                  <div className="lg:flex">
+                    {/* Icon/Visual Section */}
+                    <div className="lg:w-1/3 bg-primary/5 flex items-center justify-center p-12">
+                      <div className="text-center">
+                        <div className="w-24 h-24 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                          <IconComponent className="h-12 w-12 text-primary" />
+                        </div>
+                        <Badge variant="secondary" className="text-sm">
+                          {service.duration}
+                        </Badge>
                       </div>
-                      <Badge variant="secondary" className="capitalize">
-                        {service.category}
-                      </Badge>
                     </div>
-                    <CardTitle className="text-xl">{service.title}</CardTitle>
-                    <CardDescription className="text-base">{service.description}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <ul className="space-y-2 mb-6">
-                      {service.features.map((feature, index) => (
-                        <li key={index} className="flex items-center text-sm text-gray-600">
-                          <div className="w-1.5 h-1.5 bg-primary rounded-full mr-3"></div>
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-                    <div className="space-y-2 text-sm mb-6">
-                      <div><strong>Duration:</strong> {service.duration}</div>
-                      <div><strong>For:</strong> {service.eligibility}</div>
+                    
+                    {/* Content Section */}
+                    <div className="lg:w-2/3 p-8">
+                      <CardHeader className="p-0 mb-6">
+                        <CardTitle className="text-2xl mb-2">{service.title}</CardTitle>
+                        <CardDescription className="text-base text-gray-600">
+                          {service.description}
+                        </CardDescription>
+                      </CardHeader>
+                      
+                      <CardContent className="p-0 space-y-6">
+                        {/* Features */}
+                        <div>
+                          <h4 className="font-semibold text-gray-900 mb-3">What You'll Get:</h4>
+                          <ul className="space-y-2">
+                            {service.features.map((feature, idx) => (
+                              <li key={idx} className="flex items-start text-gray-600">
+                                <div className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                                <span className="text-sm">{feature}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+
+                        {/* Eligibility */}
+                        <div className="bg-gray-50 p-4 rounded-lg">
+                          <h4 className="font-semibold text-gray-900 mb-2">Ideal For:</h4>
+                          <p className="text-sm text-gray-600">{service.eligibility}</p>
+                        </div>
+
+                        {/* CTA */}
+                        <div className="pt-4 border-t border-gray-100">
+                          <ServiceApplicationForm serviceName={service.title} />
+                        </div>
+                      </CardContent>
                     </div>
-                    <Button className="w-full" onClick={() => handleApplyClick(service)}>
-                      Apply Now
-                    </Button>
-                  </CardContent>
+                  </div>
                 </Card>
               );
             })}
           </div>
+        </div>
+      </section>
 
-          {filteredServices.length === 0 && (
-            <div className="text-center py-12">
-              <p className="text-gray-500">No programs found for the selected category.</p>
-            </div>
-          )}
+      {/* Process Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="container-width section-padding">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Our Process
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              A proven methodology that takes your startup from concept to success
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            {[
+              {
+                step: '01',
+                title: 'Application',
+                description: 'Submit your application with your startup idea and current stage'
+              },
+              {
+                step: '02',
+                title: 'Assessment',
+                description: 'Our experts evaluate your potential and fit for our programs'
+              },
+              {
+                step: '03',
+                title: 'Matching',
+                description: 'We connect you with the right program, mentors, and resources'
+              },
+              {
+                step: '04',
+                title: 'Growth',
+                description: 'Execute your growth plan with continuous support and guidance'
+              }
+            ].map((item, index) => (
+              <div key={index} className="text-center relative">
+                <div className="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">
+                  {item.step}
+                </div>
+                <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
+                <p className="text-gray-600 text-sm">{item.description}</p>
+                
+                {/* Connector line */}
+                {index < 3 && (
+                  <div className="hidden md:block absolute top-8 left-full w-full h-0.5 bg-gray-300 transform -translate-x-1/2"></div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-20">
+        <div className="container-width section-padding">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Frequently Asked Questions
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {[
+              {
+                question: 'What stage startups do you work with?',
+                answer: 'We support startups at all stages, from pre-seed ideas to Series A companies looking to scale.'
+              },
+              {
+                question: 'Do you take equity in startups?',
+                answer: 'Our equity requirements vary by program. Some programs are equity-free, while others involve small equity stakes in exchange for funding.'
+              },
+              {
+                question: 'How long are the programs?',
+                answer: 'Program duration varies from 2 weeks for intensive bootcamps to 12 months for comprehensive incubation programs.'
+              },
+              {
+                question: 'What kind of support do you provide?',
+                answer: 'We provide mentorship, funding connections, technical resources, legal guidance, and access to our extensive network of partners and investors.'
+              }
+            ].map((faq, index) => (
+              <Card key={index} className="p-6">
+                <h3 className="font-semibold text-gray-900 mb-3">{faq.question}</h3>
+                <p className="text-gray-600 text-sm">{faq.answer}</p>
+              </Card>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -172,27 +217,16 @@ const Programs = () => {
       <section className="py-20 bg-primary text-white">
         <div className="container-width section-padding text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Ready to Join Our Programs?
+            Ready to Get Started?
           </h2>
           <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-            Take the first step towards transforming your startup. Our expert team is ready to guide you through your entrepreneurial journey.
+            Take the first step towards transforming your startup. Apply to our programs today.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" variant="secondary" onClick={() => handleApplyClick(services[0])}>
-              Download Brochure
-            </Button>
-            <Button size="lg" variant="secondary" >
-              <Link to="/case-studies">Schedule a call</Link>
-            </Button>
-          </div>
+          <Button size="lg" variant="secondary">
+            Apply Now
+          </Button>
         </div>
       </section>
-
-      <ProgramApplicationForm
-        isOpen={isApplicationFormOpen}
-        onClose={() => setIsApplicationFormOpen(false)}
-        program={selectedProgram}
-      />
     </div>
   );
 };

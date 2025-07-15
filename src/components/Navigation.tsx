@@ -12,10 +12,11 @@ const Navigation = () => {
 
   const navItems = [
     { name: 'Home', path: '/' },
-    { name: 'Programs', path: '/programs' },
+    // { name: 'Programs', path: '/programs' },
+    { name: 'Consulting', path: '/consultings' },
     { name: 'Products', path: '/products' },
     { name: 'Resources', path: '/resources' },
-    { name: 'Fund', path: '/fund' },
+    { name: 'Investment', path: '/fund' },
     { name: 'Portfolio', path: '/case-studies' },
     { name: 'Blog', path: '/blog' },
     // { name: 'Events', path: '/events' },
@@ -34,12 +35,12 @@ const Navigation = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
            <img 
-  src="/lovable-uploads/cropped-Betawaves-Logo-Waves-1.png" 
+  src="/lovable-uploads/H-Betawaves-Logo-Black.png" 
   alt="Betawaves Logo" 
-  className="w-10 h-10 object-contain" 
+  className="w-30 h-10 object-contain" 
 />
 
-            <span className="text-xl font-bold text-gray-900">Betawaves</span>
+           
           </Link>
 
           {/* Desktop Navigation */}

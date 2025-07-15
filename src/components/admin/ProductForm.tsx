@@ -105,7 +105,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ isOpen, onClose, onSubmit, pr
                 value={formData.price}
                 onChange={(e) => setFormData(prev => ({ ...prev, price: e.target.value }))}
                 placeholder="$99/month"
-                required
+                
               />
             </div>
             <div className="space-y-2">

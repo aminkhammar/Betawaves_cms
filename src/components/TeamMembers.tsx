@@ -3,7 +3,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { CMSService,TeamMember } from '@/data/cmsData';
 import { useEffect, useState } from 'react';
 import { useRef } from 'react';
-import { Linkedin } from 'lucide-react'; // or any icon lib
+
 
 const teamMembers: TeamMember[] = [
   {
@@ -78,6 +78,7 @@ const TeamMembers = () => {
      return () => clearInterval(interval);
   }, []);
 
+  
 
   return (
     <section className="py-20">

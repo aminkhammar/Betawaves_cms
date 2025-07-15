@@ -12,6 +12,7 @@ import contactMessagesRoutes from './src/routes/contact-messages.js';
 import teamRoutes from './src/routes/team-members.js';
 import resourcesRoutes from './src/routes/resources.js';
 import programApplicationsRoutes from './src/routes/program-applications.js';
+import consultingRoutes from './src/routes/consulting.js';
 
 import uploadsRoutes from './src/routes/uploads.js';
 import adminRoutes from './src/routes/admins.js';
@@ -36,6 +37,8 @@ app.use('/api/contact-messages', contactMessagesRoutes);
 app.use('/api/team-members', teamRoutes);
 app.use('/api/resources', resourcesRoutes);
 app.use('/api/program-applications', programApplicationsRoutes);
+app.use('/api/consulting', consultingRoutes);
+
 app.use('/api/popup', popupRoutes);
 
 app.use('/api/uploads', uploadsRoutes); // For handling uploads

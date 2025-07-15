@@ -77,11 +77,11 @@ const CaseStudies = () => {
       </section>
 
       {/* Case Studies Grid */}
-      <section className="py-20">
+      <section className="py-20 bg-gray-50">
         <div className="container-width section-padding">
           <div className="grid grid-cols-1 gap-12">
             {filteredCaseStudies.map((caseStudy, index) => (
-              <Card key={caseStudy.id} className={`overflow-hidden hover:shadow-xl transition-all duration-300 ${index % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}>
+              <Card key={caseStudy.id} className={`overflow-hidden flex flex-col justify-between hover:shadow-xl transition-all duration-300 ${index % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}>
                 <div className="lg:flex">
                   {/* Image */}
                   <div className="lg:w-1/2">
@@ -132,27 +132,30 @@ const CaseStudies = () => {
                         </ul>
                       </div>
 
-                      {/* Testimonial */}
-                      <div className="bg-primary/5 p-6 rounded-lg">
-                        <blockquote className="text-gray-700 italic mb-4">
-                          "{caseStudy.testimonial.quote}"
-                        </blockquote>
-                        <div className="flex items-center">
-                          <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mr-4">
-                            <span className="text-primary font-semibold text-lg">
-                              {caseStudy.testimonial.author.charAt(0)}
-                            </span>
-                          </div>
-                          <div>
-                            <div className="font-semibold text-gray-900">
-                              {caseStudy.testimonial.author}
-                            </div>
-                            <div className="text-sm text-gray-600">
-                              {caseStudy.testimonial.position}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                     {/* Testimonial */}
+{caseStudy.testimonial?.quote?.trim() && (
+  <div className="bg-primary/5 p-6 rounded-lg">
+    <blockquote className="text-gray-700 italic mb-4">
+      "{caseStudy.testimonial.quote}"
+    </blockquote>
+    <div className="flex items-center">
+      <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mr-4">
+        <span className="text-primary font-semibold text-lg">
+          {caseStudy.testimonial.author?.charAt(0) || ''}
+        </span>
+      </div>
+      <div>
+        <div className="font-semibold text-gray-900">
+          {caseStudy.testimonial.author}
+        </div>
+        <div className="text-sm text-gray-600">
+          {caseStudy.testimonial.position}
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
 
                       {/* Tags */}
                       <div className="flex flex-wrap gap-2">
