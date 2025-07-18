@@ -213,7 +213,7 @@ const FundMap = () => {
             </p>
           </div>
           
-          <div className="max-w-5xl mx-auto px-4">
+          <div className="max-w-3xl mx-auto px-4">
         <Card className="bg-gray-800 border-gray-700 overflow-hidden rounded-xl">
           <img 
             src="/lovable-uploads/map.jpg" 

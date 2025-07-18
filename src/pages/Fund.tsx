@@ -168,29 +168,35 @@ const Fund = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
             <Card className="hover:shadow-lg transition-shadow animate-fade-in">
               <CardHeader>
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Leaf className="h-8 w-8 text-green-600" />
+                <div className="w-16 h-16  bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Leaf className="h-8 w-8 text-primary" />
                 </div>
                 <CardTitle className="text-xl text-center">ESG Considerations</CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-base text-gray-600 space-y-4">
                   <p>
-                    We integrate Environmental, Social, and Governance (ESG) principles into every investment decision, 
-                    ensuring our portfolio companies contribute to sustainable development goals.
+                   Investing with Purpose and Responsibility
+At Betaventures, ESG (Environmental, Social, and Governance) principles are embedded into every investment decision we make.
+
                   </p>
                   <ul className="space-y-2">
                     <li className="flex items-start">
-                      <div className="w-2 h-2 bg-green-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                      <span>Environmental impact assessment and monitoring</span>
+                      <div className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                      <span>Rigorous impact assessments for every portfolio company</span>
                     </li>
                     <li className="flex items-start">
-                      <div className="w-2 h-2 bg-green-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                      <span>Social responsibility and community engagement</span>
+                      <div className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                      <span>Tailored ESG action plans to improve performance over time</span>
+                    </li>
+                   
+                    <li className="flex items-start">
+                      <div className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                      <span>Clear reporting on local and regional impact</span>
                     </li>
                     <li className="flex items-start">
-                      <div className="w-2 h-2 bg-green-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                      <span>Strong governance and ethical business practices</span>
+                      <div className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                      <span> Active advocacy for responsible innovation and sustainable growth</span>
                     </li>
                   </ul>
                 </CardDescription>
@@ -199,28 +205,30 @@ const Fund = () => {
 
             <Card className="hover:shadow-lg transition-shadow animate-fade-in">
               <CardHeader>
-                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Users className="h-8 w-8 text-purple-600" />
+                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Users className="h-8 w-8 text-primary" />
                 </div>
                 <CardTitle className="text-xl text-center">Gender Lens Investing</CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-base text-gray-600 space-y-4">
                   <p>
-                    We actively seek opportunities that promote gender equality and women's empowerment, 
-                    recognizing the significant impact of inclusive business practices on sustainable growth.
+                   We are committed to building a more inclusive and equitable startup ecosystem.
+Betaventures aims for at least 40% of its portfolio to be made up of startups founded or co-founded by women.
+
                   </p>
                   <ul className="space-y-2">
                     <li className="flex items-start">
-                      <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                      <span>Support for women-led and women-owned businesses</span>
+                      <div className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                      <span>To further support this mission, we are committing 1% of the fund’s carry to programs
+                         that empower girls and women in tech across the MENA+ region.</span>
                     </li>
                     <li className="flex items-start">
-                      <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                      <div className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></div>
                       <span>Promoting workplace diversity and inclusion</span>
                     </li>
                     <li className="flex items-start">
-                      <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                      <div className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></div>
                       <span>Creating products and services that benefit women</span>
                     </li>
                   </ul>

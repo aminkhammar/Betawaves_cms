@@ -106,12 +106,14 @@ const Home = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h1 className="text-4xl font-bold text-gray-900 mb-6 md:text-4xl">
-                Empowering Tomorrow's
-                <span className="gradient-text block">Tech in Emerging</span>
-                Markets
+                Driving Innovation, Investment, and Ecosystem Growth
+                <span className="gradient-text block">In Emerging Markets</span>
+
               </h1>
-              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-                Betawaves empowers bold founders and institutions in emerging markets with the tools, knowledge, and capital to build impactful tech-driven ventures.
+              <p className="text-xl  text-gray-600 mb-8 leading-relaxed">
+               We provide innovation services, early-stage investment, and ecosystem support across the region. 
+               From building startup programs and advising corporates and governments to co-creating ventures, 
+               we help ideas grow and markets connect.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button size="lg" asChild>
