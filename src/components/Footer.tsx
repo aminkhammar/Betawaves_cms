@@ -47,19 +47,24 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="col-span-1 md:col-span-2">
-            <Link to="/" className="flex items-center space-x-2 mb-4">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">B</span>
-              </div>
-              <span className="text-xl font-bold">Betawaves</span>
-            </Link>
+           {/* Logo */}
+          <Link to="/" className="flex items-center space-x-2">
+           <img 
+  src="/lovable-uploads/H-Betawaves-Logo-White.png" 
+  alt="Betawaves Logo" 
+  className="w-30 h-10 object-contain" 
+/>
+
+           
+          </Link>
+
             <p className="text-gray-400 mb-4 max-w-md">
-              Empowering startups to transform innovative ideas into successful businesses through comprehensive support, mentorship, and funding opportunities.
+              We provide innovation services, early-stage investment, and ecosystem support across the region.
+              From building startup programs and advising corporates and governments to co-creating ventures,
+              we help ideas grow and markets connect.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">Twitter</a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">LinkedIn</a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">GitHub</a>
+              <a href="https://www.linkedin.com/company/betawavesstudio/" className="text-gray-400 hover:text-white transition-colors">LinkedIn</a>
             </div>
           </div>
 
@@ -68,10 +73,10 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2 text-gray-400">
               {/* <li><Link to="/services" className="hover:text-white transition-colors">Programs</Link></li> */}
-              <li><Link to="/consultings" className="hover:text-white transition-colors">Consultings</Link></li>
+              <li><Link to="/consultings" className="hover:text-white transition-colors">Innovation Consultings</Link></li>
               <li><Link to="/case-studies" className="hover:text-white transition-colors">Portfolio</Link></li>
               <li><Link to="/blog" className="hover:text-white transition-colors">Blog</Link></li>
-              <li><Link to="/fund" className="hover:text-white transition-colors">Fund</Link></li>
+              <li><Link to="/fund" className="hover:text-white transition-colors">Investment</Link></li>
               <li><Link to="/contact" className="hover:text-white transition-colors">Contact</Link></li>
             </ul>
           </div>
@@ -107,12 +112,12 @@ const Footer = () => {
 
         <div className="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm">
-            © 2024 Betawaves. All rights reserved.
+            © 2025 Betawaves. All rights reserved.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</a>
-            <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">Terms of Service</a>
-            <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">Cookie Policy</a>
+            <li><Link to="/privacy-policy" className="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</Link></li>
+             <li><Link to="/terms-of-service" className="text-gray-400 hover:text-white text-sm transition-colors">Terms of Service</Link></li>
+            <li><Link to="/cookie-policy" className="text-gray-400 hover:text-white text-sm transition-colors">Cookie Policy</Link></li>
           </div>
         </div>
       </div>

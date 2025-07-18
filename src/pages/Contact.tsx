@@ -91,10 +91,66 @@ const Contact = () => {
       </section>
 
       {/* Contact Form and Info */}
-      <section className="py-20">
+      <section className="py-20"> 
         <div className="container-width section-padding">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-            {/* Contact Form */}
+           
+
+            {/* Contact Information */}
+            <div className="space-y-8">
+              {/* Contact Cards */}
+              <div className="space-y-6">
+                <Card className="p-6">
+                  <h3 className="text-lg font-semibold mb-4">Office Locations</h3>
+                  <div className="space-y-4">
+                    <div>
+                      <h4 className="font-medium">Level 1 Gate Avenue</h4>
+                      <p className="text-gray-600 text-sm">
+                        South Zone, Dubai International Financial Centre<br />
+                        United Arab Emirates<br />
+                        +971 58 829 0773
+                      </p>
+                    </div>
+                    <div>
+                    </div>
+                  </div>
+                </Card>
+
+                <Card className="p-6">
+                  <h3 className="text-lg font-semibold mb-4">Quick Contact</h3>
+                  <div className="space-y-3">
+                    <div>
+                      <span className="font-medium">General Inquiries:</span>
+                      <br />
+                      <a href="mailto:hello@betawaves.com" className="text-primary hover:underline">
+                        hello@betawaves.com
+                      </a>
+                    </div>
+                    <div>
+                      <span className="font-medium">Program Applications:</span>
+                      <br />
+                      <a href="mailto:apply@betawaves.com" className="text-primary hover:underline">
+                        apply@betawaves.com
+                      </a>
+                    </div>
+                    <div>
+                      <span className="font-medium">Partnership Opportunities:</span>
+                      <br />
+                      <a href="mailto:partners@betawaves.com" className="text-primary hover:underline">
+                        partners@betawaves.com
+                      </a>
+                    </div>
+                  </div>
+                </Card>
+
+               
+              </div>
+
+              {/* FAQ Section */}
+           
+            </div>
+
+ {/* Contact Form */}
             <div>
               <Card>
                 <CardHeader>
@@ -143,7 +199,7 @@ const Contact = () => {
                     </div>
 
                     <div>
-                      <Label htmlFor="program">Program of Interest</Label>
+                      <Label htmlFor="program">Interest</Label>
                       <select
                         id="program"
                         name="program"
@@ -152,11 +208,10 @@ const Contact = () => {
                         className="mt-1 w-full px-3 py-2 border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
                       >
                         <option value="">Select a program</option>
-                        <option value="incubation">Startup Incubation</option>
-                        <option value="acceleration">Acceleration Program</option>
-                        <option value="bootcamp">Bootcamp Programs</option>
-                        <option value="cxo-academy">CXO Academy</option>
-                        <option value="consultation">General Consultation</option>
+                        <option value="incubation">Products</option>
+                        <option value="acceleration">Consulting</option>
+                        <option value="bootcamp">Investment</option>
+                        <option value="cxo-academy">Programs</option>
                       </select>
                     </div>
 
@@ -187,65 +242,7 @@ const Contact = () => {
               </Card>
             </div>
 
-            {/* Contact Information */}
-            <div className="space-y-8">
-              {/* Contact Cards */}
-              <div className="space-y-6">
-                <Card className="p-6">
-                  <h3 className="text-lg font-semibold mb-4">Office Locations</h3>
-                  <div className="space-y-4">
-                    <div>
-                      <h4 className="font-medium">Level 1 Gate Avenue</h4>
-                      <p className="text-gray-600 text-sm">
-                        South Zone, Dubai International Financial Centre<br />
-                        United Arab Emirates<br />
-                        +971 58 829 0773
-                      </p>
-                    </div>
-                    <div>
-                      <h4 className="font-medium">Austin Office</h4>
-                      <p className="text-gray-600 text-sm">
-                        456 Startup Lane<br />
-                        Austin, TX 73301<br />
-                        +1 (555) 987-6543
-                      </p>
-                    </div>
-                  </div>
-                </Card>
 
-                <Card className="p-6">
-                  <h3 className="text-lg font-semibold mb-4">Quick Contact</h3>
-                  <div className="space-y-3">
-                    <div>
-                      <span className="font-medium">General Inquiries:</span>
-                      <br />
-                      <a href="mailto:hello@betawaves.com" className="text-primary hover:underline">
-                        hello@betawaves.com
-                      </a>
-                    </div>
-                    <div>
-                      <span className="font-medium">Program Applications:</span>
-                      <br />
-                      <a href="mailto:apply@betawaves.com" className="text-primary hover:underline">
-                        apply@betawaves.com
-                      </a>
-                    </div>
-                    <div>
-                      <span className="font-medium">Partnership Opportunities:</span>
-                      <br />
-                      <a href="mailto:partners@betawaves.com" className="text-primary hover:underline">
-                        partners@betawaves.com
-                      </a>
-                    </div>
-                  </div>
-                </Card>
-
-               
-              </div>
-
-              {/* FAQ Section */}
-           
-            </div>
           </div>
         </div>
       </section>

@@ -18,6 +18,10 @@ import uploadsRoutes from './src/routes/uploads.js';
 import adminRoutes from './src/routes/admins.js';
 import popupRoutes from './src/routes/popup.js';
 
+import collaboratorsRoutes from './src/routes/collaborators.js';
+import runningTextRoutes from './src/routes/runningText.js';
+import styleSettingsRoutes from './src/routes/styleSettings.js';
+
 import db from './db.js';
 
 const app = express();
@@ -44,7 +48,9 @@ app.use('/api/popup', popupRoutes);
 app.use('/api/uploads', uploadsRoutes); // For handling uploads
 app.use('/uploads', express.static('public/uploads')); // Serve uploaded files
 app.use('/api/admins', adminRoutes);  // For admin login
-
+app.use('/api/collaborators', collaboratorsRoutes);
+app.use('/api/running-text', runningTextRoutes);
+app.use('/api/style-settings', styleSettingsRoutes);
 
 app.get('/', (req, res) => {
   res.send('CMS API is running 🚀');

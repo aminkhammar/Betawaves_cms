@@ -222,7 +222,7 @@ export const transformTeamMemberFromDB = (dbMember: any): TeamMember => ({
   position: dbMember.position,
   bio: dbMember.bio,
   image: dbMember.image,
-  linkedIn: dbMember.linkedin || undefined
+  linkedin_url: dbMember.linkedin_url || undefined
 });
 
 // Transform frontend team member to MySQL format
@@ -231,5 +231,5 @@ export const transformTeamMemberToDB = (member: Omit<TeamMember, 'id'>): any => 
   position: member.position,
   bio: member.bio,
   image: member.image,
-  linkedin: member.linkedIn || null
+  linkedin_url: member.linkedin_url || null
 });

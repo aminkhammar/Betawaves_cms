@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Users, BookOpen, Home as HomeIcon, ArrowUp } from 'lucide-react';
+import { Users, BookOpen, Home as HomeIcon, ArrowUp, ArrowLeft } from 'lucide-react';
 import { CMSService, Consulting } from '@/data/cmsData';
 
 const ConsultingPage = () => {
@@ -67,6 +67,12 @@ const ConsultingPage = () => {
     <div className="min-h-screen bg-gray-50">
       <section className="bg-gradient-to-r from-primary/10 via-blue-50 to-primary/5 py-20">
         <div className="container-width section-padding text-center">
+           <Button variant="outline" size="sm" className="mb-6" asChild>
+                        <Link to="/" className="flex items-center space-x-2">
+                          <ArrowLeft size={16} />
+                          <span>Back to Home</span>
+                        </Link>
+                      </Button>
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             Our <span className="gradient-text">Consulting Services</span>
           </h1>
@@ -129,11 +135,14 @@ const ConsultingPage = () => {
     </div>
   </div>
 
-  {consulting.directUrl && (
+  {/* {consulting.directUrl && (
     <Button className="w-full mt-auto" onClick={() => window.open(consulting.directUrl, '_blank')}>
       Learn More
     </Button>
-  )}
+  )} */}
+  <Link to="/contact" className="w-full mt-auto">
+  <Button className="w-full">Contact Us</Button>
+</Link>
 </CardContent>
                   
                 </Card>
@@ -158,10 +167,10 @@ const ConsultingPage = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" variant="secondary">
-              <Link to="/contact">Request Consultation</Link>
+              <Link to="/contact">Book a session</Link>
             </Button>
             <Button size="lg" variant="secondary">
-              <Link to="/case-studies">See Our Impact</Link>
+              <Link to="/case-studies">Download our brochure</Link>
             </Button>
           </div>
         </div>

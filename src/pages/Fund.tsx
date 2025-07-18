@@ -1,32 +1,57 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, DollarSign, MapPin, Users, Leaf, Zap, Droplets } from 'lucide-react';
+import FundMap from '@/components/FundMap';
+import { ArrowLeft, DollarSign, MapPin, Users, Leaf, Zap, Droplets, Truck, Factory, Recycle } from 'lucide-react';
 
 const Fund = () => {
   const sectors = [
-    { name: 'Renewable Energy', icon: Zap },
-    { name: 'Water Technology', icon: Droplets },
-    { name: 'Agri-Tech', icon: Leaf },
-    { name: 'Green Infrastructure', icon: MapPin },
-    { name: 'Circular Economy', icon: Users }
+    { 
+      name: 'Agritech and Food Security', 
+      icon: Leaf,
+      description: 'Supporting innovative solutions for sustainable agriculture, precision farming, and food security across Africa'
+    },
+    { 
+      name: 'Waste Management', 
+      icon: Recycle,
+      description: 'Investing in circular economy solutions, waste-to-energy technologies, and sustainable waste processing systems'
+    },
+    { 
+      name: 'E-Mobility', 
+      icon: Zap,
+      description: 'Accelerating electric vehicle adoption, charging infrastructure, and sustainable transportation solutions'
+    },
+    { 
+      name: 'RE Optimization', 
+      icon: Factory,
+      description: 'Enhancing renewable energy efficiency through smart grid technologies and energy storage solutions'
+    },
+    { 
+      name: 'Clean Industries', 
+      icon: Users,
+      description: 'Transforming industrial processes through clean technologies and sustainable manufacturing practices'
+    },
+    { 
+      name: 'Sustainable Supply Chain', 
+      icon: Truck,
+      description: 'Building transparent, efficient, and environmentally responsible supply chain solutions'
+    }
   ];
 
   const fundHighlights = [
     {
       title: '$40M Fund Size',
-      description: 'Targeting seed and early-stage climate tech startups across North and West Africa',
+      description: 'Targeting sustainability and climate tech startups from ideation to series A',
       icon: DollarSign
     },
     {
       title: 'Regional Focus',
-      description: 'Focused on North and West Africa markets with deep local expertise',
+      description: 'Actively sourcing from Saudi Arabia, UAE, Jordan, Egypt, Tunisia, Morocco, Algeria, and Pakistan',
       icon: MapPin
     },
     {
       title: 'Beyond Capital',
-      description: 'Venture building, expert guidance, and access to our global network',
+      description: 'Venture building, expert guidance, and global network access',
       icon: Users
     }
   ];
@@ -43,16 +68,17 @@ const Fund = () => {
                 <span>Back to Home</span>
               </Link>
             </Button>
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              Fueling Climate-Tech Innovation
-              <span className="block">Across Africa</span>
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+              Powering the Future of Sustainability 
+              <span className="block">and Climate Tech</span>
+               
+              <span className="block">Across  <span className="gradient-text">MENA+</span></span>
             </h1>
             <p className="text-xl text-gray-600 leading-relaxed mb-4">
-              A $40M Impact-Driven Fund Backing the Next Generation of Climate-Tech Startups
+             BetaVentures, the investment arm of Betawaves, invests in early-stage startups using technology to tackle climate and environmental challenges.
             </p>
             <p className="text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto">
-              The Betawaves Fund supports bold founders tackling climate challenges in North and West Africa. 
-              We invest early and help startups scale through funding, mentorship, and global exposure.
+              We support bold founders building real-world solutions that drive sustainability, resilience, and green growth across the MENA+ region.
             </p>
           </div>
         </div>
@@ -91,50 +117,116 @@ const Fund = () => {
         </div>
       </section>
 
-      {/* Key Points */}
+      {/* Our Investment Focus */}
       <section className="py-20 bg-gray-50">
         <div className="container-width section-padding">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Our Investment Focus
             </h2>
+            <p className="text-xl text-gray-600">
+              Six key sectors driving climate innovation across Africa
+            </p>
           </div>
 
-          <div className="max-w-4xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-              <Card className="p-6">
-                <h3 className="text-xl font-semibold mb-4">Investment Criteria</h3>
-                <ul className="space-y-3">
-                  <li className="flex items-start">
-                    <div className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                    <span>$40M fund targeting seed and early-stage climate tech startups</span>
-                  </li>
-                  <li className="flex items-start">
-                    <div className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                    <span>Focus on North and West Africa</span>
-                  </li>
-                  <li className="flex items-start">
-                    <div className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                    <span>Support beyond capital: venture building, expert guidance, and global network</span>
-                  </li>
-                </ul>
-              </Card>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {sectors.map((sector, index) => {
+              const IconComponent = sector.icon;
+              return (
+                <Card key={index} className="text-center hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <IconComponent className="h-8 w-8 text-primary" />
+                    </div>
+                    <CardTitle className="text-lg">{sector.name}</CardTitle>
+                    <CardDescription className="text-sm text-gray-600 mt-2">
+                      {sector.description}
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
+              );
+            })}
+          </div>
+        </div>
+      </section>
 
-              <Card className="p-6">
-                <h3 className="text-xl font-semibold mb-4">Target Sectors</h3>
-                <div className="grid grid-cols-1 gap-3">
-                  {sectors.map((sector, index) => {
-                    const IconComponent = sector.icon;
-                    return (
-                      <div key={index} className="flex items-center space-x-3">
-                        <IconComponent className="h-5 w-5 text-primary" />
-                        <span>{sector.name}</span>
-                      </div>
-                    );
-                  })}
+      {/* Geographic Focus Map */}
+      <FundMap />
+
+      {/* Impact and Sustainability */}
+      <section className="py-20 bg-white">
+        <div className="container-width section-padding">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Impact and Sustainability
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Our commitment to responsible investing drives positive environmental and social outcomes
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            <Card className="hover:shadow-lg transition-shadow animate-fade-in">
+              <CardHeader>
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Leaf className="h-8 w-8 text-green-600" />
                 </div>
-              </Card>
-            </div>
+                <CardTitle className="text-xl text-center">ESG Considerations</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription className="text-base text-gray-600 space-y-4">
+                  <p>
+                    We integrate Environmental, Social, and Governance (ESG) principles into every investment decision, 
+                    ensuring our portfolio companies contribute to sustainable development goals.
+                  </p>
+                  <ul className="space-y-2">
+                    <li className="flex items-start">
+                      <div className="w-2 h-2 bg-green-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                      <span>Environmental impact assessment and monitoring</span>
+                    </li>
+                    <li className="flex items-start">
+                      <div className="w-2 h-2 bg-green-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                      <span>Social responsibility and community engagement</span>
+                    </li>
+                    <li className="flex items-start">
+                      <div className="w-2 h-2 bg-green-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                      <span>Strong governance and ethical business practices</span>
+                    </li>
+                  </ul>
+                </CardDescription>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-lg transition-shadow animate-fade-in">
+              <CardHeader>
+                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Users className="h-8 w-8 text-purple-600" />
+                </div>
+                <CardTitle className="text-xl text-center">Gender Lens Investing</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription className="text-base text-gray-600 space-y-4">
+                  <p>
+                    We actively seek opportunities that promote gender equality and women's empowerment, 
+                    recognizing the significant impact of inclusive business practices on sustainable growth.
+                  </p>
+                  <ul className="space-y-2">
+                    <li className="flex items-start">
+                      <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                      <span>Support for women-led and women-owned businesses</span>
+                    </li>
+                    <li className="flex items-start">
+                      <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                      <span>Promoting workplace diversity and inclusion</span>
+                    </li>
+                    <li className="flex items-start">
+                      <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                      <span>Creating products and services that benefit women</span>
+                    </li>
+                  </ul>
+                </CardDescription>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
@@ -159,7 +251,7 @@ const Fund = () => {
               </CardHeader>
               <CardContent className="text-center">
                 <Button size="lg" variant="secondary" className="w-full" asChild>
-                  <Link to="/contact">Apply Now</Link>
+                <a href="https://betaventuresfund1.decilehub.com/submit_your_company" target="_blank" rel="noopener noreferrer">Apply Now</a>
                 </Button>
               </CardContent>
             </Card>
@@ -173,7 +265,7 @@ const Fund = () => {
               </CardHeader>
               <CardContent className="text-center">
                 <Button size="lg" variant="secondary" className="w-full" asChild>
-                  <Link to="/contact">Invest With Us</Link>
+                <a href="https://betaventuresfund1.decilehub.com/pacts?pid=9nGqvjKm&dgrid=08c2c772-f426-4763-a30a-6ad9d7279dd3" target="_blank" rel="noopener noreferrer">Invest With Us</a>
                 </Button>
               </CardContent>
             </Card>

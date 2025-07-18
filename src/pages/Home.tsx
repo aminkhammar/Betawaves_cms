@@ -22,7 +22,9 @@ const Home = () => {
 
 
   const [styleSettings, setStyleSettings] = useState({
+    heroType: 'image',
     heroImage: '/lovable-uploads/1d16839f-1293-4868-96a6-d3a7e8489861.jpg',
+    heroVideoUrl:'',
     runningTextCompanies: [
       'TechStars', 'Y Combinator', 'Sequoia Capital', 'Andreessen Horowitz', 
       'Google Ventures', 'Microsoft Ventures', 'Amazon Web Services', 'Salesforce Ventures'
@@ -139,17 +141,28 @@ const Home = () => {
               </div>
             </div>
             
-           <div className="relative group">
-  <div className="bg-white rounded-3xl shadow-xl overflow-hidden transform transition-all duration-500 group-hover:scale-[1.02] group-hover:shadow-2xl">
-    <img 
+         <div className="rounded-md shadow-xl overflow-hidden transform transition-all duration-500 group-hover:scale-[1.02] group-hover:shadow-2xl" >
+  {styleSettings.heroType === 'video' ? (
+    <div className="aspect-video w-full">
+      <iframe
+        src={styleSettings.heroVideoUrl.replace('watch?v=', 'embed/')}
+        title="Hero Video"
+        className="w-full h-full"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      />
+    </div>
+  ) : (
+    <img
       src={styleSettings.heroImage}
-      alt="Startup collaboration"
+      alt="Hero"
       className="w-full h-72 object-cover"
     />
-    <div className="p-6 bg-white">
-      <h3 className="font-semibold text-gray-900 text-lg">Innovation in Action</h3>
-      <p className="text-sm text-gray-600 mt-2">Where ideas meet execution</p>
-    </div>
+  )}
+
+  <div className="p-6 bg-white">
+    <h3 className="font-semibold text-gray-900 text-lg">Innovation in Action</h3>
+    <p className="text-sm text-gray-600 mt-2">Where ideas meet execution</p>
   </div>
 </div>
 
@@ -374,17 +387,21 @@ const Home = () => {
                   </div>
                 </div>
                 <CardTitle className="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight">
-                  Fueling Climate-Tech Innovation
+                  Powering the Future of Sustainability and Climate Tech
                   <span className="block bg-gradient-to-r from-cyan-200 to-white bg-clip-text text-transparent">
-                    Across Africa
+                    Across MENA+ 
+
                   </span>
                 </CardTitle>
                 <CardDescription className="text-2xl text-white/95 mb-6 font-medium">
-                  A $40M Impact-Driven Fund Backing the Next Generation of Climate-Tech Startups
+                  BetaVentures, the investment arm of Betawaves, 
+                  invests in early-stage startups using technology to tackle climate and environmental challenges.
+
                 </CardDescription>
                 <p className="text-lg text-white/85 max-w-4xl mx-auto leading-relaxed">
-                  The Betawaves Fund supports bold founders tackling climate challenges in North and West Africa. 
-                  We invest early and help startups scale through funding, mentorship, and global exposure.
+                  We support bold founders building real-world solutions that drive sustainability,
+                  resilience, and green growth across the MENA+ region.
+
                 </p>
               </CardHeader>
               
@@ -395,21 +412,23 @@ const Home = () => {
                       <DollarSign className="h-5 w-5 text-white" />
                     </div>
                     <h3 className="text-lg font-semibold text-white mb-3">$40M Fund Size</h3>
-                    <p className="text-white/80 text-sm leading-relaxed">Targeting seed and early-stage climate tech startups</p>
+                    <p className="text-white/80 text-sm leading-relaxed">Targeting sustainability and climate tech startups from ideation to series A
+</p>
                   </div>
                   <div className="text-center group">
                     <div className="w-10 h-10 bg-white/20 backdrop-blur rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
                       <Globe className="h-5 w-5 text-white" />
                     </div>
                     <h3 className="text-lg font-semibold text-white mb-3">Regional Focus</h3>
-                    <p className="text-white/80 text-sm leading-relaxed">North and West Africa markets with deep local expertise</p>
+                    <p className="text-white/80 text-sm leading-relaxed">Actively sourcing from Saudi Arabia, UAE, Jordan, Egypt, Tunisia, Morocco, Algeria, and Pakistan
+</p>
                   </div>
                   <div className="text-center group">
                     <div className="w-10 h-10 bg-white/20 backdrop-blur rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
                       <Zap className="h-5 w-5 text-white" />
                     </div>
                     <h3 className="text-lg font-semibold text-white mb-3">Beyond Capital</h3>
-                    <p className="text-white/80 text-sm leading-relaxed">Venture building, expert guidance, and global network access</p>
+                    <p className="text-white/80 text-sm leading-relaxed">Venture building, expert guidance, and global network access</p>
                   </div>
                 </div>
 
@@ -419,30 +438,31 @@ const Home = () => {
                   <div className="text-center">
                     <p className="text-white/90 text-sm mb-3 font-medium">For Startups</p>
                     <Button size="lg" variant="secondary" className="bg-white text-primary hover:bg-white/90 font-semibold px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all" asChild>
-                      <Link to="/contact">Apply Now</Link>
+                      <a href="https://betaventuresfund1.decilehub.com/submit_your_company" target="_blank" rel="noopener noreferrer">Apply Now</a>
                     </Button>
                   </div>
                   <div className="text-center">
                     <p className="text-white/90 text-sm mb-3 font-medium">For Investors</p>
                     <Button size="lg" variant="outline" className="border-2 border-white text-primary hover:bg-white hover:text-primary font-semibold px-8 py-3 rounded-xl transition-all" asChild>
-                      <Link to="/contact">Invest With Us</Link>
+                <a href="https://betaventuresfund1.decilehub.com/pacts?pid=9nGqvjKm&dgrid=08c2c772-f426-4763-a30a-6ad9d7279dd3" target="_blank" rel="noopener noreferrer">Invest With Us</a>
                     </Button>
                   </div>
                 </div>
               </CardContent>
             </Card>
+            
 
-            {/* <div className="text-center mt-12">
+            <div className="text-center mt-12">
               <Button asChild variant="secondary" size="lg" className="bg-white/20 backdrop-blur border-white/30 text-white hover:bg-white hover:text-primary font-semibold rounded-xl">
-                <Link to="/fund">Learn More About Our Fund</Link>
+                <a href="https://betaventuresfund1.decilehub.com/" target="_blank" rel="noopener noreferrer">Learn More About Betaventures</a>
               </Button>
-            </div> */}
+            </div>
           </div>
         </div>
       </section>
 
       {/* Success Stories Preview */}
-      <section className="py-20">
+      <section className="py-20 ">
         <div className="container-width section-padding">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
@@ -490,7 +510,7 @@ const Home = () => {
       </section>
 
       {/* Team Members Section */}
-      <TeamMembers />
+      <TeamMembers  />
 
 
   {/* Collaborators Section */}

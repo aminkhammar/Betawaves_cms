@@ -125,7 +125,7 @@ export interface TeamMember {
   position: string;
   bio: string;
   image: string;
-  linkedIn?: string;
+  linkedin_url?: string;
 }
 
 export interface ProgramApplication {
@@ -476,7 +476,7 @@ export const mockTeamMembers: TeamMember[] = [
     position: 'CEO & Founder',
     bio: 'Former VP at Google Ventures with 15+ years in startup ecosystem. Led 50+ successful exits.',
     image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face',
-    linkedIn: 'https://linkedin.com/in/sarahjohnson'
+    linkedin_url: 'https://linkedin.com/in/sarahjohnson'
   },
   {
     id: '2',
@@ -484,7 +484,7 @@ export const mockTeamMembers: TeamMember[] = [
     position: 'CTO & Co-founder',
     bio: 'Tech veteran from Meta and Uber. Expert in scaling tech teams and building innovative products.',
     image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face',
-    linkedIn: 'https://linkedin.com/in/michaelchen'
+    linkedin_url: 'https://linkedin.com/in/michaelchen'
   },
   {
     id: '3',
@@ -492,7 +492,7 @@ export const mockTeamMembers: TeamMember[] = [
     position: 'Head of Programs',
     bio: 'MBA from Stanford. Previously at Y Combinator, managed over 200 startup accelerations.',
     image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face',
-    linkedIn: 'https://linkedin.com/in/emilyrodriguez'
+    linkedin_url: 'https://linkedin.com/in/emilyrodriguez'
   },
   {
     id: '4',
@@ -500,7 +500,7 @@ export const mockTeamMembers: TeamMember[] = [
     position: 'Investment Director',
     bio: 'Former Goldman Sachs analyst. Specialized in early-stage funding and venture capital.',
     image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face',
-    linkedIn: 'https://linkedin.com/in/davidpark'
+    linkedin_url: 'https://linkedin.com/in/davidpark'
   }
 ];
 

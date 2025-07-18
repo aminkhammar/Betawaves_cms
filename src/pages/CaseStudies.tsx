@@ -3,6 +3,9 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { CMSService, CaseStudy } from '@/data/cmsData';
+import { Button } from '@/components/ui/button';
+import { Users, BookOpen, Home as HomeIcon, ArrowUp, ArrowLeft } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const CaseStudies = () => {
   const [caseStudies, setCaseStudies] = useState<CaseStudy[]>([]);
@@ -44,6 +47,12 @@ const CaseStudies = () => {
       <section className="bg-gradient-to-r from-primary/10 to-blue-50 py-20">
         <div className="container-width section-padding">
           <div className="text-center max-w-3xl mx-auto">
+             <Button variant="outline" size="sm" className="mb-6" asChild>
+                                    <Link to="/" className="flex items-center space-x-2">
+                                      <ArrowLeft size={16} />
+                                      <span>Back to Home</span>
+                                    </Link>
+                                  </Button>
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
               <span className="gradient-text">Our</span> Portfolio
             </h1>
@@ -81,7 +90,7 @@ const CaseStudies = () => {
         <div className="container-width section-padding">
           <div className="grid grid-cols-1 gap-12">
             {filteredCaseStudies.map((caseStudy, index) => (
-              <Card key={caseStudy.id} className={`overflow-hidden flex flex-col justify-between hover:shadow-xl transition-all duration-300 ${index % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}>
+              <Card key={caseStudy.id} className={`overflow-hidden  hover:shadow-xl transition-all duration-300 ${index % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}>
                 <div className="lg:flex">
                   {/* Image */}
                   <div className="lg:w-1/2">
@@ -186,12 +195,11 @@ const CaseStudies = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
             {[
-              { value: '500+', label: 'Startups Supported' },
-              { value: '$50M+', label: 'Total Funding Raised' },
-              { value: '85%', label: 'Success Rate' },
-              { value: '25+', label: 'Countries Reached' }
+              { value: '250+', label: 'Startups Supported' },
+              { value: '10+', label: 'Innovation Programs' },
+              { value: '12', label: 'Startups from scratch' }
             ].map((stat, index) => (
               <div key={index} className="text-center">
                 <div className="text-3xl md:text-4xl font-bold text-primary mb-2">

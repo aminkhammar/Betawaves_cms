@@ -32,14 +32,20 @@ router.get('/:id', async (req, res) => {
 // POST /api/team-members
 router.post('/', async (req, res) => {
   try {
-    const { name, position, bio, image, linkedin_url } = req.body;
-    
-    const [result] = await db.execute(
-      'INSERT INTO team_members (name, position, bio, image, linkedin_url) VALUES (?, ?, ?, ?, ?)',
-      [name, position, bio, image, linkedin_url]
-    );
-    
-    const [newTeamMember] = await db.execute('SELECT * FROM team_members WHERE id = ?', [result.insertId]);
+   const { name, position, bio, image, linkedin_url } = req.body;
+
+const [result] = await db.execute(
+  'INSERT INTO team_members (name, position, bio, image, linkedin_url) VALUES (?, ?, ?, ?, ?)',
+  [
+    name,
+    position,
+    bio,
+    image,
+    linkedin_url || null,
+  ]
+);
+
+const [newTeamMember] = await db.execute('SELECT * FROM team_members WHERE id = ?', [result.insertId]);
     res.status(201).json(newTeamMember[0]);
   } catch (error) {
     console.error('Error creating team member:', error);

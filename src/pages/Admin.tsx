@@ -585,13 +585,17 @@ const deleteConsultingMutation = useMutation({
   };
 
   const handleTeamMemberSubmit = (data: Omit<TeamMember, 'id'>) => {
-    if (editingTeamMember) {
-      updateTeamMemberMutation.mutate({ id: editingTeamMember.id, data });
-      setEditingTeamMember(undefined);
-    } else {
-      createTeamMemberMutation.mutate(data);
-    }
+  const mappedData = {
+    ...data,
   };
+
+  if (editingTeamMember) {
+    updateTeamMemberMutation.mutate({ id: editingTeamMember.id, data: mappedData });
+    setEditingTeamMember(undefined);
+  } else {
+    createTeamMemberMutation.mutate(mappedData);
+  }
+};
 
 
 const handleConsultingSubmit = (data: Omit<Consulting, 'id'>) => {
@@ -720,12 +724,12 @@ const handleConsultingSubmit = (data: Omit<Consulting, 'id'>) => {
           programsApplications={programApplications}
         />
         
-        <Tabs defaultValue="services" className="mt-10">
-          <TabsList className="grid w-full grid-cols-5 lg:grid-cols-10">
+        <Tabs defaultValue="services" className="mt-9">
+          <TabsList className="grid w-full grid-cols-5 lg:grid-cols-9">
             <TabsTrigger value="services">Programs</TabsTrigger>
             <TabsTrigger value="consulting">Consultings</TabsTrigger>
             <TabsTrigger value="products">Products</TabsTrigger>
-            <TabsTrigger value="funds">Funds</TabsTrigger>
+            {/* <TabsTrigger value="funds">Funds</TabsTrigger> */}
             <TabsTrigger value="case-studies">Portfolio</TabsTrigger>
             <TabsTrigger value="blog-posts">Blog Posts</TabsTrigger>
             {/* <TabsTrigger value="events">Events</TabsTrigger> */}
@@ -1174,9 +1178,9 @@ const handleConsultingSubmit = (data: Omit<Consulting, 'id'>) => {
                         />
                         <div>
                           <div className="font-medium">{member.position}</div>
-                          {member.linkedIn && (
+                          {member.linkedin_url && (
                             <a 
-                              href={member.linkedIn} 
+                              href={member.linkedin_url} 
                               target="_blank" 
                               rel="noopener noreferrer"
                               className="text-blue-600 text-xs hover:underline"

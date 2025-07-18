@@ -1,8 +1,16 @@
 import express from 'express';
 import db from '../../db.js';
+import nodemailer from 'nodemailer';
 
 const router = express.Router();
 
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'khammaramin@gmail.com',      // ✅ your default sender email
+    pass: 'bket hmtc sbjs ppbz',            // ⚠️ NOT your Gmail password — use App Password or real SMTP password
+  }
+});
 
 // GET /api/contact-messages
 router.get('/', async (req, res) => {
@@ -30,6 +38,7 @@ router.get('/:id', async (req, res) => {
 });
 
 import { v4 as uuidv4 } from 'uuid'; // install with: npm i uuid
+
 // POST /api/contact-messages
 router.post('/', async (req, res) => {
   try {
@@ -51,8 +60,26 @@ router.post('/', async (req, res) => {
     new Date(), // created_at
     new Date(), // updated_at
   ]
+
 );
 
+
+// Send email to default recipient
+    const mailOptions = {
+      from: 'khammaramin@gmail.com',            // sender
+      to: 'gamerwaymin@gmail.com',                // 📩 recipient
+      subject: `New Contact Message: ${subject}`,
+      html: `
+        <h3>New Contact Message</h3>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Subject:</strong> ${subject}</p>
+        <p><strong>Message:</strong></p>
+        <p>${message}</p>
+      `
+    };
+
+    await transporter.sendMail(mailOptions);
 
     const [newMessage] = await db.execute('SELECT * FROM contact_messages WHERE id = ?', [id]);
     res.status(201).json(newMessage[0]);

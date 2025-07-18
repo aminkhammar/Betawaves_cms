@@ -6,6 +6,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Consulting } from '@/data/cmsData';
 
+
+
 interface ConsultingFormProps {
   isOpen: boolean;
   onClose: () => void;
@@ -107,7 +109,7 @@ const ConsultingForm: React.FC<ConsultingFormProps> = ({ isOpen, onClose, onSubm
               id="eligibility"
               value={formData.eligibility}
               onChange={(e) => setFormData(prev => ({ ...prev, eligibility: e.target.value }))}
-              required
+              
             />
           </div>
 

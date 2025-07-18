@@ -23,6 +23,11 @@ import NotFound from "./pages/NotFound";
 import AdminLogin from "@/components/AdminLogin"; // at the top
 import ScrollToTop from "@/ScrollToTop"; // at the top
 
+import CookieConsent from "@/components/CookieConsent";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
+import CookiePolicy from "./pages/CookiePolicy";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -50,12 +55,16 @@ const App = () => (
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/admin" element={<AdminLogin />} />
                 <Route path="/admin/dashboard" element={<Admin />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/terms-of-service" element={<TermsOfService />} />
+                <Route path="/cookie-policy" element={<CookiePolicy />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>
             <Footer />
           </div>
+          <CookieConsent />
         </HashRouter>
       </AdminProvider>
     </TooltipProvider>

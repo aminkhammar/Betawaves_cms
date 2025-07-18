@@ -179,7 +179,7 @@ const Products = () => {
               <Link to="/contact">Contact Us</Link>
             </Button>
             <Button size="lg" variant="outline" asChild>
-              <Link to="/programs">View Programs</Link>
+              <Link to="/resources">View Resources</Link>
             </Button>
           </div>
         </div>

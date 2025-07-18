@@ -8,13 +8,15 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 interface Collaborator {
-  id: string;
+  id?: string;
   name: string;
   logo: string;
   website: string;
 }
 interface StyleSettings {
-  heroImage: string;
+  heroType: 'image' | 'video';
+  heroImage: string; // image path (if type is image)
+  heroVideoUrl: string; // YouTube URL (if type is video)
   runningTextCompanies: string[];
   collaborators: Collaborator[];
 }
@@ -32,16 +34,52 @@ const StyleManagementForm: React.FC<StyleManagementFormProps> = ({
   onSubmit, 
   currentSettings 
 }) => {
-  const [formData, setFormData] = useState({
-    heroImage: currentSettings.heroImage,
-    companiesText: currentSettings.runningTextCompanies.join('\n'),
-    collaborators: currentSettings.collaborators ?? []
+const [formData, setFormData] = useState({
+  heroType: currentSettings.heroType ?? 'image',
+  heroImage: currentSettings.heroImage ?? '',
+  heroVideoUrl: currentSettings.heroVideoUrl ?? '',
+  companiesText: currentSettings.runningTextCompanies.join('\n'),
+  collaborators: [] as Collaborator[]
+});
+
+useEffect(() => {
+  if (isOpen) {
+    fetch('http://localhost:3000/api/collaborators')
+      .then((res) => res.json())
+      .then((data) => {
+        setFormData((prev) => ({ ...prev, collaborators: data }));
+      })
+      .catch((err) => {
+        console.error('Failed to load collaborators:', err);
+      });
+    fetch('http://localhost:3000/api/running-text')
+      .then((res) => res.json())
+      .then((companies) => {
+        setFormData((prev) => ({
+          ...prev,
+          companiesText: companies.join('\n')
+        }));
+      });
+    fetch('http://localhost:3000/api/style-settings')
+  .then((res) => res.json())
+  .then((data) => {
+    setFormData((prev) => ({
+      ...prev,
+      heroType: data.hero_type,
+      heroImage: data.hero_image,
+      heroVideoUrl: data.hero_video_url,
+      imagePreview: data.hero_image,
+    }));
+    setImagePreview(data.hero_image);
   });
+  }
+}, [isOpen]);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    let heroImageUrl = formData.heroImage;
+  e.preventDefault();
+  let heroImageUrl = formData.heroImage;
 
+  // Upload hero image
   if (imageFile) {
     const uploadForm = new FormData();
     uploadForm.append('image', imageFile);
@@ -64,17 +102,74 @@ const StyleManagementForm: React.FC<StyleManagementFormProps> = ({
       return;
     }
   }
-    onSubmit({
+try {
+  await fetch('http://localhost:3000/api/style-settings', {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      heroType: formData.heroType,
       heroImage: heroImageUrl,
-      runningTextCompanies: formData.companiesText
+      heroVideoUrl: formData.heroVideoUrl,
+    }),
+  });
+} catch (err) {
+  console.error('Failed to update hero section settings:', err);
+}
+// Update running text companies
+try {
+  await fetch('http://localhost:3000/api/running-text', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      companies: formData.companiesText
         .split('\n')
-        .map(company => company.trim())
-        .filter(company => company !== ''),
-      collaborators: formData.collaborators
-    });
-    onClose();
-  };
+        .map((c) => c.trim())
+        .filter((c) => c !== '')
+    }),
+  });
+} catch (err) {
+  console.error('Failed to update running text companies:', err);
+}
 
+  // Save collaborators
+  for (const collab of formData.collaborators) {
+    try {
+      const endpoint = `http://localhost:3000/api/collaborators${collab.id ? `/${collab.id}` : ''}`;
+      const method = collab.id ? 'PUT' : 'POST';
+
+
+      const res = await fetch(endpoint, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(collab),
+      });
+
+      if (!res.ok) {
+        throw new Error(`Failed to ${method === 'POST' ? 'create' : 'update'} collaborator`);
+      }
+    } catch (error) {
+      console.error('Collaborator save error:', error);
+    }
+  }
+
+  // Call parent form submit
+  onSubmit({
+    heroType: formData.heroType,
+    heroImage: heroImageUrl,
+    heroVideoUrl: formData.heroVideoUrl,
+    runningTextCompanies: formData.companiesText
+      .split('\n')
+      .map((c) => c.trim())
+      .filter((c) => c !== ''),
+    collaborators: formData.collaborators,
+  });
+
+  onClose();
+};
 
   const [imageFile, setImageFile] = useState<File | null>(null);
 const [imagePreview, setImagePreview] = useState<string>(currentSettings.heroImage);
@@ -90,12 +185,26 @@ const updateCollaborator = (index: number, field: keyof Collaborator, value: str
 const addCollaborator = () => {
   setFormData(prev => ({
     ...prev,
-    collaborators: [...prev.collaborators, { id: crypto.randomUUID(), name: '', logo: '', website: '' }]
+   collaborators: [...prev.collaborators, { name: '', logo: '', website: '' } as Collaborator]
+
   }));
 };
 
-const removeCollaborator = (index: number) => {
-  setFormData(prev => {
+const removeCollaborator = async (index: number) => {
+  const toDelete = formData.collaborators[index];
+
+  // If it exists in DB → delete from backend
+  if (toDelete.id) {
+    try {
+      await fetch(`http://localhost:3000/api/collaborators/${toDelete.id}`, {
+        method: 'DELETE',
+      });
+    } catch (err) {
+      console.error('Failed to delete collaborator:', err);
+    }
+  }
+
+  setFormData((prev) => {
     const updated = [...prev.collaborators];
     updated.splice(index, 1);
     return { ...prev, collaborators: updated };
@@ -110,26 +219,59 @@ const removeCollaborator = (index: number) => {
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
-  <Label htmlFor="heroImage">Upload Hero Section Image</Label>
-  <Input
-    id="heroImage"
-    type="file"
-    accept="image/*"
-    onChange={(e) => {
-      const file = e.target.files?.[0];
-      if (file) {
-        setImageFile(file);
-        setImagePreview(URL.createObjectURL(file));
-      }
-    }}
-  />
-  {imagePreview && (
-    <img
-      src={imagePreview}
-      alt="Preview"
-      className="w-full h-32 object-cover rounded-lg border mt-2"
+  <div>
+  <Label>Hero Section Type</Label>
+  <select
+    value={formData.heroType}
+    onChange={(e) =>
+      setFormData((prev) => ({ ...prev, heroType: e.target.value as 'image' | 'video' }))
+    }
+    className="w-full mt-1 border border-input rounded px-3 py-2"
+  >
+    <option value="image">Image</option>
+    <option value="video">YouTube Video</option>
+  </select>
+</div>
+
+{formData.heroType === 'image' && (
+  <div className="space-y-2">
+    <Label htmlFor="heroImage">Upload Hero Section Image</Label>
+    <Input
+      id="heroImage"
+      type="file"
+      accept="image/*"
+      onChange={(e) => {
+        const file = e.target.files?.[0];
+        if (file) {
+          setImageFile(file);
+          setImagePreview(URL.createObjectURL(file));
+        }
+      }}
     />
-  )}
+    {imagePreview && (
+      <img
+        src={imagePreview}
+        alt="Preview"
+        className="w-full h-32 object-cover rounded-lg border mt-2"
+      />
+    )}
+  </div>
+)}
+
+{formData.heroType === 'video' && (
+  <div>
+    <Label htmlFor="heroVideoUrl">YouTube Video URL</Label>
+    <Input
+      id="heroVideoUrl"
+      type="url"
+      value={formData.heroVideoUrl}
+      onChange={(e) => setFormData((prev) => ({ ...prev, heroVideoUrl: e.target.value }))}
+      placeholder="https://www.youtube.com/watch?v=..."
+      required
+    />
+  </div>
+)}
+
 </div>
 
           
